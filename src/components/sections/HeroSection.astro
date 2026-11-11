@@ -30,14 +30,6 @@ const slats = Array.from({ length: SLATS }, (_, i) => {
 
   <div class="container hero-container">
     <div class="hero-content">
-      <div class="hero-eyebrow-wrap">
-        <span class="hero-badge">
-          <span class="hero-badge__dot"></span>
-          <span data-lang="es">DevOps & Cloud Platform Engineering</span>
-          <span data-lang="en">DevOps & Cloud Platform Engineering</span>
-        </span>
-      </div>
-
       <h1 class="hero-title">
         <span class="hero-word" style="--i:0">Rafael</span>
         <span class="hero-word" style="--i:1">Luyo</span>
@@ -308,34 +300,6 @@ const slats = Array.from({ length: SLATS }, (_, i) => {
     margin: 0 auto;
   }
 
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 7px 16px 7px 12px;
-    border-radius: var(--r-pill);
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .hero-badge__dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--signal-emerald);
-    box-shadow: 0 0 10px var(--signal-emerald);
-    animation: badge-pulse 2.4s ease-in-out infinite;
-  }
-
-  @keyframes badge-pulse {
-    50% { box-shadow: 0 0 0 5px rgba(48, 209, 88, 0.12), 0 0 10px var(--signal-emerald); }
-  }
-
   .hero-title {
     font-size: clamp(3.4rem, 9vw, 8.25rem);
     font-weight: 700;
@@ -373,7 +337,6 @@ const slats = Array.from({ length: SLATS }, (_, i) => {
   }
 
   /* Supporting content follows the name, unhurried */
-  .hero-eyebrow-wrap,
   .hero-lead-wrap,
   .hero-actions,
   .hero-scope-row {
@@ -383,7 +346,6 @@ const slats = Array.from({ length: SLATS }, (_, i) => {
     animation: rise-in 1.4s var(--ease-out-soft) forwards;
   }
 
-  .hero-eyebrow-wrap { animation-delay: 0.25s; }
   .hero-lead-wrap { animation-delay: 1.2s; }
   .hero-actions { animation-delay: 1.45s; }
   .hero-scope-row { animation-delay: 1.7s; }
@@ -503,9 +465,7 @@ const slats = Array.from({ length: SLATS }, (_, i) => {
     .hero-beams__drift,
     .hero-slat,
     .hero-slat::after,
-    .hero-badge__dot,
     .hero-word,
-    .hero-eyebrow-wrap,
     .hero-lead-wrap,
     .hero-actions,
     .hero-scope-row {
