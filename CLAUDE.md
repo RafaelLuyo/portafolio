@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Proyecto
 
-Portafolio personal estático (Astro 5) de un DevOps & Cloud Platform Engineer, desplegado en `https://rafaelluyo.dev` (configurado como `site` en `astro.config.mjs`, usado por `@astrojs/sitemap`). Sin framework de UI: solo componentes `.astro`, CSS plano y JS vanilla.
+Portafolio personal estático (Astro 5) de un DevOps & Cloud Platform Engineer, desplegado en `https://rafaelmao.is-a.dev` (configurado como `site` en `astro.config.mjs`, usado por `@astrojs/sitemap`). Sin framework de UI: solo componentes `.astro`, CSS plano y JS vanilla.
 
 ## Comandos
 

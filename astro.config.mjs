@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://rafaelluyo.dev',
+  site: 'https://rafaelmao.is-a.dev',
   integrations: [
     sitemap({
       changefreq: 'weekly',
