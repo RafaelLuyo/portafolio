@@ -1,0 +1,473 @@
+---
+/**
+ * ExperienceSection — career as a scroll-lit timeline.
+ * Left column (sticky): logo, dates, place. Right column: role, impact, stack.
+ * The rail fills with light as you scroll; logos switch to colour on hover.
+ */
+
+interface Experience {
+  id: string;
+  company: string;
+  logoWhite: string;
+  logoColor?: string;
+  isFilter?: boolean;
+  logoAlt: string;
+  roleEs: string;
+  roleEn: string;
+  dateEs: string;
+  dateEn: string;
+  locationEs: string;
+  locationEn: string;
+  bulletsEs: string[];
+  bulletsEn: string[];
+  techTags: string[];
+}
+
+const experiences: Experience[] = [
+  // 1. BCRP / TAPP
+  {
+    id: 'bcrp-tapp',
+    company: 'BCRP / TAPP',
+    logoWhite: '/assets/logos/tapp_white.png',
+    logoColor: '/assets/logos/tapp.png',
+    logoAlt: 'TAPP Logo',
+    roleEs: 'Especialista DevOps',
+    roleEn: 'DevOps Specialist',
+    dateEs: 'Ago 2026 – Presente',
+    dateEn: 'Aug 2026 – Present',
+    locationEs: 'Lima, Perú (Híbrido)',
+    locationEn: 'Lima, Peru (Hybrid)',
+    bulletsEs: [
+      'Liderazgo en la estrategia integral de CI/CD para el despliegue continuo de microservicios transaccionales de alta concurrencia en TAPP.',
+      'Implementación de pipelines automatizados con GitLab CI y Jenkins, gobernanza GitOps con ArgoCD y Red Hat ACM sobre OpenShift.',
+      'Gestión de secretos con HashiCorp Vault, pasarelas API en IBM API Connect y observabilidad integral con el stack ELK, OpenTelemetry & Tempo.'
+    ],
+    bulletsEn: [
+      'Led the end-to-end CI/CD platform strategy for continuous deployment of high-throughput transactional microservices at TAPP.',
+      'Engineered automated pipelines with GitLab CI and Jenkins, multi-cluster GitOps with ArgoCD and Red Hat ACM on OpenShift.',
+      'Secured credentials with HashiCorp Vault, orchestrated IBM API Connect gateways, and established full-stack observability with ELK, OpenTelemetry & Tempo.'
+    ],
+    techTags: ['OpenShift', 'ArgoCD', 'GitLab CI', 'Jenkins', 'HashiCorp Vault', 'Nexus', 'IBM API Connect', 'OpenTelemetry']
+  },
+
+  // 2. PROMART
+  {
+    id: 'promart',
+    company: 'PROMART',
+    logoWhite: '/assets/logos/promart.png',
+    isFilter: true,
+    logoAlt: 'Promart Logo',
+    roleEs: 'Analista Cloud',
+    roleEn: 'Cloud Analyst',
+    dateEs: 'Nov 2025 – Jul 2026',
+    dateEn: 'Nov 2025 – Jul 2026',
+    locationEs: 'San Borja, Perú (Híbrido)',
+    locationEn: 'San Borja, Peru (Hybrid)',
+    bulletsEs: [
+      'Despliegue de clúster Kubernetes RKE2 en alta disponibilidad con Cilium CNI (eBPF) on-premise y administración centralizada con Rancher Manager en GKE.',
+      'Liderazgo en la migración de release pipelines clásicos a pipelines declarativos YAML como código en Azure DevOps.',
+      'Modernización de red perimetral implementando Cloud Gateway API en GCP y Envoy Proxy en RKE2 on-premise, junto con optimizaciones FinOps.'
+    ],
+    bulletsEn: [
+      'Deployed production high-availability RKE2 Kubernetes with eBPF Cilium CNI on-premise, managed centrally via Rancher Manager on GKE.',
+      'Led enterprise modernization from legacy classic release pipelines to version-controlled declarative YAML pipelines in Azure DevOps.',
+      'Modernized perimeter networking implementing Cloud Gateway API in GCP and Envoy Proxy on on-premise RKE2, alongside FinOps optimizations.'
+    ],
+    techTags: ['Google Cloud', 'Kubernetes GKE', 'Cloud Run', 'Rancher', 'Cilium eBPF', 'Azure DevOps', 'FinOps']
+  },
+
+  // 3. OREXE
+  {
+    id: 'orexe',
+    company: 'OREXE',
+    logoWhite: '/assets/logos/orexe_white.png',
+    logoColor: '/assets/logos/orexe_green.png',
+    logoAlt: 'Orexe Logo',
+    roleEs: 'Ingeniero de Software & Cloud',
+    roleEn: 'Software & Cloud Engineer',
+    dateEs: 'Jul 2025 – Nov 2025',
+    dateEn: 'Jul 2025 – Nov 2025',
+    locationEs: 'Remoto (Perú)',
+    locationEn: 'Remote (Peru)',
+    bulletsEs: [
+      'Migración de más de 40 repositorios desde Azure DevOps a GitHub Enterprise, integrando agentes de IA en PRs con GitHub Copilot.',
+      'Establecimiento de políticas de gobernanza a nivel de repositorios: branch protection, branch policies y escaneo automatizado de secretos.',
+      'Migración de Pod Identity a Workload Identity con federación OIDC en Azure AKS mediante Terraform (IaC).'
+    ],
+    bulletsEn: [
+      'Migrated 40+ repositories from Azure DevOps to GitHub Enterprise, integrating AI review agents into PRs with GitHub Copilot.',
+      'Established repository governance standards: branch protection policies and automated secret scanning.',
+      'Migrated Pod Identity to Workload Identity with OIDC federation in Azure AKS via Terraform (IaC).'
+    ],
+    techTags: ['Azure AKS', 'Terraform', 'GitHub Actions', 'GitHub Copilot', 'OIDC Identity', 'DevSecOps']
+  },
+
+  // 4. CANVIA
+  {
+    id: 'canvia',
+    company: 'CANVIA',
+    logoWhite: '/assets/logos/canvia.png',
+    isFilter: true,
+    logoAlt: 'Canvia Logo',
+    roleEs: 'Analista de Infraestructura TI',
+    roleEn: 'IT Infrastructure Analyst',
+    dateEs: 'Feb 2025 – Jul 2025',
+    dateEn: 'Feb 2025 – Jul 2025',
+    locationEs: 'Lima, Perú (Híbrido)',
+    locationEn: 'Lima, Peru (Hybrid)',
+    bulletsEs: [
+      'Gestión integral de tickets de incidentes y requerimientos de infraestructura mediante ServiceAide bajo cumplimiento de SLAs.',
+      'Monitoreo continuo de servidores e infraestructura crítica con Zabbix, Pandora FMS y Elastic Stack, además de transportes en SAP Logon.'
+    ],
+    bulletsEn: [
+      'End-to-end management of infrastructure incidents and requests through ServiceAide following enterprise SLA guidelines.',
+      'Continuous server and network monitoring across critical environments utilizing Zabbix, Pandora FMS, Elastic, and SAP Logon.'
+    ],
+    techTags: ['Zabbix', 'Elastic', 'Pandora FMS', 'SAP Logon', 'ServiceAide', 'Linux Servers', 'SLA Management']
+  }
+];
+---
+
+<section id="experience" class="portfolio-section" data-tone="light" aria-labelledby="exp-title">
+  <div class="container">
+    <div class="eyebrow">
+      <span class="signal-dot"></span>
+      <span data-lang="es">Trayectoria Profesional</span>
+      <span data-lang="en">Work Experience</span>
+    </div>
+
+    <div class="section-header">
+      <h2 id="exp-title">
+        <span data-lang="es">Experiencia en Producción</span>
+        <span data-lang="en">Production Track Record</span>
+      </h2>
+      <div class="section-description">
+        <p data-lang="es">Liderazgo y ejecución técnica en infraestructura cloud, plataformas de contenedores en producción, DevSecOps y observabilidad transaccional.</p>
+        <p data-lang="en">Technical leadership and execution across cloud infrastructure, production container platforms, DevSecOps, and transactional observability.</p>
+      </div>
+    </div>
+
+    <!-- Timeline: the rail fills with light as you scroll through it -->
+    <div class="timeline">
+      <span class="timeline__rail" aria-hidden="true"><span class="timeline__fill"></span></span>
+      <ol class="timeline__list">
+
+      {experiences.map((exp, i) => (
+        <li class={`tl-item ${i === 0 ? 'tl-item--current' : ''}`}>
+          <span class="tl-node" aria-hidden="true"></span>
+
+          <!-- Left: when & where (sticky while the entry is on screen) -->
+          <div class="tl-when">
+            <div class="tl-when__inner">
+              <div class="tl-logo">
+                {exp.logoColor ? (
+                  <span class="tl-logo__dual">
+                    <img src={exp.logoWhite} alt={exp.logoAlt} class="tl-logo__img logo-default-white" loading="lazy" />
+                    <img src={exp.logoColor} alt="" aria-hidden="true" class="tl-logo__img logo-hover-color" loading="lazy" />
+                  </span>
+                ) : (
+                  <img src={exp.logoWhite} alt={exp.logoAlt} class="tl-logo__img logo-filter-white" loading="lazy" />
+                )}
+              </div>
+              <span class="tl-date" data-lang="es">{exp.dateEs}</span>
+              <span class="tl-date" data-lang="en">{exp.dateEn}</span>
+              <span class="tl-place" data-lang="es">{exp.locationEs}</span>
+              <span class="tl-place" data-lang="en">{exp.locationEn}</span>
+            </div>
+          </div>
+
+          <!-- Right: role and impact -->
+          <div class="tl-body">
+            <p class="tl-company">{exp.company}</p>
+            <h3 class="tl-role" data-lang="es">{exp.roleEs}</h3>
+            <h3 class="tl-role" data-lang="en">{exp.roleEn}</h3>
+
+            <ul class="tl-points" data-lang="es">
+              {exp.bulletsEs.map((b) => <li>{b}</li>)}
+            </ul>
+            <ul class="tl-points" data-lang="en">
+              {exp.bulletsEn.map((b) => <li>{b}</li>)}
+            </ul>
+
+            <div class="tl-tags">
+              {exp.techTags.map((tech) => <span class="tag">{tech}</span>)}
+            </div>
+          </div>
+        </li>
+      ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ========================================================
+     Experience — scroll-lit timeline
+     ======================================================== */
+  .timeline {
+    --rail-x: 260px;
+    position: relative;
+  }
+
+  .timeline__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .timeline__rail {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--rail-x);
+    width: 1px;
+    background: var(--line);
+  }
+
+  .timeline__fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--aurora-glacier), var(--aurora-iris) 50%, var(--aurora-bloom));
+    box-shadow: 0 0 12px rgba(124, 108, 255, 0.6);
+    transform-origin: top;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .timeline__fill {
+        animation: rail-fill linear both;
+        animation-timeline: --timeline;
+        animation-range: entry 40% exit 60%;
+      }
+
+      .timeline {
+        view-timeline-name: --timeline;
+      }
+
+      @keyframes rail-fill {
+        from { transform: scaleY(0); }
+        to { transform: scaleY(1); }
+      }
+    }
+  }
+
+  /* ---- Entry ---- */
+  .tl-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--rail-x) minmax(0, 1fr);
+    padding: 3rem 0;
+  }
+
+  .tl-item + .tl-item {
+    border-top: 1px solid var(--line-dim);
+  }
+
+  .tl-node {
+    position: absolute;
+    top: 3.6rem;
+    left: var(--rail-x);
+    width: 13px;
+    height: 13px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: var(--bg-primary);
+    border: 2px solid var(--text-dim);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
+  }
+
+  .tl-item:hover .tl-node,
+  .tl-item--current .tl-node {
+    border-color: var(--aurora-glacier);
+    background: var(--aurora-glacier);
+    box-shadow: 0 0 0 5px rgba(62, 200, 255, 0.15), 0 0 18px rgba(62, 200, 255, 0.7);
+  }
+
+  .tl-item--current .tl-node {
+    animation: node-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes node-pulse {
+    50% { box-shadow: 0 0 0 10px rgba(62, 200, 255, 0), 0 0 18px rgba(62, 200, 255, 0.7); }
+  }
+
+  /* ---- Left column ---- */
+  .tl-when {
+    padding-right: 3rem;
+  }
+
+  .tl-when__inner {
+    position: sticky;
+    top: 7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .tl-logo {
+    height: 40px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .tl-logo__dual {
+    position: relative;
+    display: inline-flex;
+    height: 100%;
+  }
+
+  .tl-logo__img {
+    height: 36px;
+    width: auto;
+    max-width: 130px;
+    object-fit: contain;
+    transition: opacity var(--transition-base), filter var(--transition-base);
+  }
+
+  .logo-hover-color {
+    position: absolute;
+    inset: 0 auto auto 0;
+    opacity: 0;
+  }
+
+  /* white artwork turns to ink when the page is light */
+  .logo-default-white {
+    filter: var(--logo-mono);
+  }
+
+  .tl-item:hover .logo-default-white { opacity: 0; }
+  .tl-item:hover .logo-hover-color { opacity: 1; }
+
+  .logo-filter-white {
+    filter: var(--logo-mono);
+    opacity: 0.85;
+  }
+
+  .tl-item:hover .logo-filter-white {
+    filter: none;
+    opacity: 1;
+  }
+
+  .tl-date {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tl-item--current .tl-date {
+    background: var(--aurora);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .tl-place {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* ---- Right column ---- */
+  .tl-body {
+    padding-left: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform var(--transition-slow);
+  }
+
+  .tl-item:hover .tl-body {
+    transform: translateX(6px);
+  }
+
+  .tl-company {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .tl-role {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.75rem;
+  }
+
+  .tl-points {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 68ch;
+    counter-reset: point;
+  }
+
+  .tl-points li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .tl-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.7rem;
+    height: 1px;
+    background: var(--text-muted);
+    transition: width var(--transition-base), background-color var(--transition-base);
+  }
+
+  .tl-item:hover .tl-points li::before {
+    width: 0.95rem;
+    background: var(--aurora-glacier);
+  }
+
+  .tl-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 900px) {
+    .timeline {
+      --rail-x: 6px;
+    }
+
+    .tl-item {
+      grid-template-columns: 1fr;
+      padding: 2.25rem 0 2.25rem 2rem;
+    }
+
+    .tl-node {
+      top: 2.6rem;
+    }
+
+    .tl-when {
+      padding: 0 0 1.25rem;
+    }
+
+    .tl-when__inner {
+      position: static;
+    }
+
+    .tl-body {
+      padding-left: 0;
+    }
+
+    .tl-item:hover .tl-body {
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tl-item--current .tl-node {
+      animation: none;
+    }
+  }
+</style>

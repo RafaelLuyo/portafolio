@@ -1,0 +1,379 @@
+---
+/**
+ * CertificationsSection.astro — Credentials as wallet passes.
+ * Each pass is tinted by its issuer, tilts in 3D toward the cursor and shows
+ * a holographic foil where the light hits it.
+ */
+
+interface Credential {
+  id: string;
+  provider: string;
+  titleEs: string;
+  titleEn: string;
+  year: string;
+  link: string;
+  isCredly: boolean;
+  icon: string;
+  /** Monochrome dark logos need inverting on the dark passes */
+  invert?: boolean;
+}
+
+const credentials: Credential[] = [
+  {
+    id: 'aws-ccp',
+    provider: 'AMAZON WEB SERVICES',
+    titleEs: 'AWS Certified Cloud Practitioner',
+    titleEn: 'AWS Certified Cloud Practitioner',
+    year: '2025',
+    link: 'https://www.credly.com/badges/3988638f-5a8e-4f6c-9199-6b77ee961406/linked_in_profile',
+    isCredly: true,
+    icon: '/assets/icons/aws.svg'
+  },
+  {
+    id: 'cka-mitocode',
+    provider: 'MITOCODE ENTERPRISE',
+    titleEs: 'Certified Kubernetes Administrator (CKA) Program',
+    titleEn: 'Certified Kubernetes Administrator (CKA) Program',
+    year: '2026',
+    link: 'https://www.linkedin.com/in/rafael-luyo-ramirez/',
+    isCredly: false,
+    icon: '/assets/icons/kubernetes.svg'
+  },
+  {
+    id: 'cloud-platform-mitocode',
+    provider: 'MITOCODE ENTERPRISE',
+    titleEs: 'Cloud Platform Engineer',
+    titleEn: 'Cloud Platform Engineer',
+    year: '2026',
+    link: 'https://www.linkedin.com/in/rafael-luyo-ramirez/',
+    isCredly: false,
+    icon: '/assets/icons/google-cloud.svg'
+  },
+  {
+    id: 'tecsup-devops',
+    provider: 'TECSUP PERÚ',
+    titleEs: 'Bootcamp DevOps de Cero a Experto',
+    titleEn: 'DevOps Bootcamp: Zero to Expert',
+    year: '2025',
+    link: 'https://www.linkedin.com/in/rafael-luyo-ramirez/',
+    isCredly: false,
+    icon: '/assets/icons/linux-tux.svg'
+  },
+  {
+    id: 'ibm-security',
+    provider: 'IBM PROFESSIONAL',
+    titleEs: 'IBM Cybersecurity Analyst Professional Certificate',
+    titleEn: 'IBM Cybersecurity Analyst Professional Certificate',
+    year: '2025',
+    link: 'https://www.credly.com/badges/bd78eb21-50dd-4f7f-971a-ba3d632ca52c/linked_in_profile',
+    isCredly: true,
+    icon: '/assets/icons/ibm.svg',
+    invert: true
+  }
+];
+// Pass tint (RGB) per credential, taken from each issuer's brand colour
+const tints: Record<string, string> = {
+  'aws-ccp': '255, 153, 0',
+  'cka-mitocode': '50, 108, 229',
+  'cloud-platform-mitocode': '66, 133, 244',
+  'tecsup-devops': '245, 197, 24',
+  'ibm-security': '15, 98, 254',
+};
+---
+
+<section id="certifications" class="portfolio-section" data-tone="light" aria-labelledby="cert-title">
+  <div class="container">
+    <div class="eyebrow">
+      <span class="signal-dot"></span>
+      <span data-lang="es">Credenciales & Validación Técnica</span>
+      <span data-lang="en">Credentials & Certifications</span>
+    </div>
+
+    <div class="section-header">
+      <h2 id="cert-title">
+        <span data-lang="es">Certificaciones & Formación</span>
+        <span data-lang="en">Certifications & Academic Training</span>
+      </h2>
+      <div class="section-description">
+        <p data-lang="es">Credenciales cloud, Kubernetes y ciberseguridad que respaldan mi trabajo en infraestructura crítica y gobernanza de clústeres empresariales.</p>
+        <p data-lang="en">Cloud, Kubernetes, and cybersecurity credentials validating my architectural and production container engineering standards.</p>
+      </div>
+    </div>
+
+    <div class="pass-grid" data-stagger>
+      {credentials.map((cert) => (
+        <a
+          href={cert.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="pass tone-dark"
+          style={`--tint: ${tints[cert.id] ?? '124, 108, 255'};`}
+          aria-label={cert.titleEs}
+        >
+          <span class="pass__holo" aria-hidden="true"></span>
+          <span class="pass__glare" aria-hidden="true"></span>
+          <img class:list={["pass__watermark", { "icon-invert": cert.invert }]} src={cert.icon} alt="" loading="lazy" aria-hidden="true" />
+
+          <span class="pass__top">
+            <span class="pass__logo">
+              <img src={cert.icon} alt={cert.provider} loading="lazy" width="24" height="24" class:list={[{ "icon-invert": cert.invert }]} />
+            </span>
+            <span class="pass__provider">{cert.provider}</span>
+            <span class="pass__year">{cert.year}</span>
+          </span>
+
+          <span class="pass__title" data-lang="es">{cert.titleEs}</span>
+          <span class="pass__title" data-lang="en">{cert.titleEn}</span>
+
+          <span class="pass__foot">
+            {cert.isCredly ? (
+              <span class="pass__status pass__status--verified">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zm3.78 5.72a.75.75 0 00-1.06-1.06L6.5 8.88 5.28 7.66a.75.75 0 00-1.06 1.06l1.75 1.75a.75.75 0 001.06 0l4.75-4.75z"/>
+                </svg>
+                VERIFIED CREDLY
+              </span>
+            ) : (
+              <span class="pass__status">ACADEMIC / ENTERPRISE</span>
+            )}
+            <svg class="pass__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 12L12 4M12 4H6M12 4V10"/>
+            </svg>
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Flex so an incomplete last row stays centred */
+  .icon-invert {
+    filter: invert(1);
+  }
+
+  .pass-grid {
+    --cols: 3;
+    --gap: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--gap);
+    perspective: 1200px;
+  }
+
+  .pass-grid > .pass {
+    width: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  }
+
+  /* ---------- Wallet pass ---------- */
+  .pass {
+    --rx: 0deg;
+    --ry: 0deg;
+    --px: 50%;
+    --py: 50%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    aspect-ratio: 1.58 / 1;
+    padding: 1.6rem 1.75rem;
+    border-radius: 22px;
+    overflow: hidden;
+    isolation: isolate;
+    color: inherit;
+    text-decoration: none;
+    background:
+      radial-gradient(120% 140% at 0% 0%, rgba(var(--tint), 0.38) 0%, transparent 55%),
+      radial-gradient(90% 120% at 100% 100%, rgba(var(--tint), 0.16) 0%, transparent 60%),
+      linear-gradient(160deg, #1a1a1e 0%, #0b0b0d 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 30px 60px -30px rgba(0, 0, 0, 0.9),
+      0 0 0 0 rgba(var(--tint), 0);
+    transform: rotateX(var(--rx)) rotateY(var(--ry));
+    transform-style: preserve-3d;
+    transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+    will-change: transform;
+  }
+
+  .pass.is-tilting {
+    transition: transform 0.08s linear, box-shadow 0.5s var(--ease);
+  }
+
+  .pass:hover {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 40px 80px -30px rgba(0, 0, 0, 0.95),
+      0 0 60px -10px rgba(var(--tint), 0.45);
+  }
+
+  /* Holographic foil that shifts with the cursor */
+  .pass__holo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: conic-gradient(from 120deg at var(--px) var(--py),
+      rgba(62, 200, 255, 0.0), rgba(62, 200, 255, 0.22), rgba(124, 108, 255, 0.22),
+      rgba(255, 111, 181, 0.22), rgba(255, 214, 10, 0.14), rgba(48, 209, 88, 0.18), rgba(62, 200, 255, 0.0));
+    mix-blend-mode: color-dodge;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+    -webkit-mask-image: repeating-linear-gradient(115deg, #000 0 2px, rgba(0, 0, 0, 0.55) 2px 5px);
+    mask-image: repeating-linear-gradient(115deg, #000 0 2px, rgba(0, 0, 0, 0.55) 2px 5px);
+  }
+
+  .pass__glare {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(300px circle at var(--px) var(--py), rgba(255, 255, 255, 0.16), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+  }
+
+  .pass:hover .pass__holo,
+  .pass:hover .pass__glare,
+  .pass:focus-visible .pass__holo {
+    opacity: 1;
+  }
+
+  .pass__watermark {
+    position: absolute;
+    right: -8%;
+    bottom: -18%;
+    width: 52%;
+    z-index: -1;
+    opacity: 0.08;
+    filter: grayscale(1) brightness(2);
+  }
+
+  .pass__watermark.icon-invert {
+    filter: invert(1);
+    transform: rotate(-12deg);
+    pointer-events: none;
+  }
+
+  /* ---------- Content ---------- */
+  .pass__top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transform: translateZ(30px);
+  }
+
+  .pass__logo {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    padding: 8px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    flex-shrink: 0;
+  }
+
+  .pass__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .pass__provider {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.75);
+    min-width: 0;
+  }
+
+  .pass__year {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .pass__title {
+    margin-top: auto;
+    font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    text-wrap: balance;
+    transform: translateZ(40px);
+  }
+
+  .pass__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transform: translateZ(20px);
+  }
+
+  .pass__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+
+  .pass__status--verified {
+    color: var(--signal-emerald);
+  }
+
+  .pass__arrow {
+    color: var(--text-muted);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+  }
+
+  .pass:hover .pass__arrow {
+    color: var(--text-primary);
+    transform: translate(2px, -2px);
+  }
+
+  @media (max-width: 1024px) {
+    .pass-grid {
+      --cols: 2;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pass-grid {
+      --cols: 1;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !window.matchMedia('(hover: hover)').matches) return;
+
+    document.querySelectorAll('.pass').forEach(function(pass) {
+      pass.addEventListener('pointermove', function(e) {
+        var r = pass.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width;
+        var y = (e.clientY - r.top) / r.height;
+        pass.classList.add('is-tilting');
+        pass.style.setProperty('--ry', ((x - 0.5) * 14).toFixed(2) + 'deg');
+        pass.style.setProperty('--rx', ((0.5 - y) * 12).toFixed(2) + 'deg');
+        pass.style.setProperty('--px', (x * 100).toFixed(1) + '%');
+        pass.style.setProperty('--py', (y * 100).toFixed(1) + '%');
+      }, { passive: true });
+
+      pass.addEventListener('pointerleave', function() {
+        pass.classList.remove('is-tilting');
+        pass.style.setProperty('--rx', '0deg');
+        pass.style.setProperty('--ry', '0deg');
+      });
+    });
+  });
+</script>

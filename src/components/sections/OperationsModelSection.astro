@@ -1,0 +1,736 @@
+---
+/**
+ * OperationsModelSection.astro — Operating model (how I work with clients)
+ * Layout: text column (eyebrow, title, features, tags) + animated phase visual.
+ * The visual plays Architecture → Co-implementation → Deploy & Observability once
+ * when scrolled into view: each phase goes pending → running (amber, travelling border)
+ * → success (emerald) → done, with a work-log column beside each card.
+ */
+
+type IconKey = 'compass' | 'users' | 'activity';
+
+interface Feature {
+  icon: IconKey;
+  titleEs: string;
+  titleEn: string;
+  descEs: string;
+  descEn: string;
+}
+
+interface Phase {
+  icon: IconKey;
+  titleEs: string;
+  titleEn: string;
+  substepEs: string;
+  substepEn: string;
+  moreEs: string;
+  moreEn: string;
+  runMs: number;
+  thinkingEs: string;
+  thinkingEn: string;
+  resultEs: string;
+  resultEn: string;
+}
+
+// Inline Lucide-style glyphs (stroke = currentColor so they follow the dark theme)
+const iconPaths: Record<IconKey, string> = {
+  compass: '<circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  activity: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+};
+
+const features: Feature[] = [
+  {
+    icon: 'compass',
+    titleEs: 'Arquitectura definida en conjunto',
+    titleEn: 'Architecture defined together',
+    descEs: 'Workshops para entender el negocio, los SLOs y las restricciones antes de escribir una línea de IaC.',
+    descEn: 'Workshops to understand the business, SLOs and constraints before writing a single line of IaC.',
+  },
+  {
+    icon: 'users',
+    titleEs: 'Implementación junto al cliente',
+    titleEn: 'Implementation with the client',
+    descEs: 'Infraestructura como código y pipelines CI/CD para Kubernetes, máquinas virtuales o servidores tradicionales, adaptados a tu stack.',
+    descEn: 'Infrastructure as code and CI/CD pipelines for Kubernetes, virtual machines or traditional servers, adapted to your stack.',
+  },
+  {
+    icon: 'activity',
+    titleEs: 'Producción observable y equipo autónomo',
+    titleEn: 'Observable production, autonomous team',
+    descEs: 'Métricas, logs, trazas y alertas desde el primer release, y transferencia de conocimiento para que tu equipo opere la plataforma.',
+    descEn: 'Metrics, logs, traces and alerts from the first release, plus knowledge transfer so your team can run the platform.',
+  },
+];
+
+const tags: { es: string; en: string }[] = [
+  { es: 'Despliegues de código', en: 'Code Deployments' },
+  { es: 'Builds', en: 'Builds' },
+  { es: 'Infraestructura', en: 'Infrastructure' },
+  { es: 'Artefactos', en: 'Artifacts' },
+  { es: 'Observabilidad', en: 'Observability' },
+];
+
+const phases: Phase[] = [
+  {
+    icon: 'compass',
+    titleEs: 'Arquitectura & Diseño',
+    titleEn: 'Architecture & Design',
+    substepEs: 'Workshop con el cliente',
+    substepEn: 'Client workshop',
+    moreEs: '+2 más',
+    moreEn: '+2 more',
+    runMs: 2600,
+    thinkingEs: 'Levantando requerimientos, SLOs y restricciones de seguridad para definir la arquitectura y los pipelines...',
+    thinkingEn: 'Gathering requirements, SLOs and security constraints to define the architecture and pipelines...',
+    resultEs: 'Arquitectura objetivo y diseño de pipelines aprobados; ADRs y roadmap acordados con el equipo.',
+    resultEn: 'Target architecture and pipeline design approved; ADRs and roadmap agreed with the team.',
+  },
+  {
+    icon: 'users',
+    titleEs: 'Implementación con el cliente',
+    titleEn: 'Co-implementation',
+    substepEs: 'IaC + pipelines CI/CD',
+    substepEn: 'IaC + CI/CD pipelines',
+    moreEs: '+2 más',
+    moreEn: '+2 more',
+    runMs: 3000,
+    thinkingEs: 'Construyendo la infraestructura como código y los pipelines de build y despliegue, sobre Kubernetes, VMs o servidores...',
+    thinkingEn: 'Building infrastructure as code and the build and deploy pipelines, on Kubernetes, VMs or servers...',
+    resultEs: 'Infraestructura aprovisionada como código y pipelines de build y despliegue funcionando en cada entorno.',
+    resultEn: 'Infrastructure provisioned as code and build and deploy pipelines running in every environment.',
+  },
+  {
+    icon: 'activity',
+    titleEs: 'Despliegue & Observabilidad',
+    titleEn: 'Deploy & Observability',
+    substepEs: 'Monitoreo & handover',
+    substepEn: 'Monitoring & handover',
+    moreEs: '+2 más',
+    moreEn: '+2 more',
+    runMs: 3000,
+    thinkingEs: 'Desplegando a producción de forma progresiva y validando los SLOs en dashboards y alertas...',
+    thinkingEn: 'Rolling out to production progressively and validating SLOs on dashboards and alerts...',
+    resultEs: 'En producción sin downtime. Dashboards, alertas y runbooks entregados, con transferencia de conocimiento al equipo.',
+    resultEn: 'Live with zero downtime. Dashboards, alerts and runbooks handed over, with knowledge transfer to the team.',
+  },
+];
+---
+
+<section id="modelo-operacion" class="portfolio-section" data-tone="light" aria-labelledby="ops-title">
+  <div class="container">
+    <div class="ops-row">
+      <!-- Text column -->
+      <div class="ops-text">
+        <div class="eyebrow">
+          <span class="signal-dot"></span>
+          <span data-lang="es">Modelo de Operación & Entrega</span>
+          <span data-lang="en">Operating Model & Delivery</span>
+        </div>
+
+        <h2 id="ops-title" class="ops-title">
+          <span data-lang="es">De la arquitectura a la operación observable</span>
+          <span data-lang="en">From architecture to observable operations</span>
+        </h2>
+
+        <p class="ops-desc" data-lang="es">Trabajo con tu equipo en tres fases: definimos juntos la arquitectura y los pipelines, los implementamos en tu entorno y los llevamos a producción con observabilidad, cerrando con la transferencia de conocimiento.</p>
+        <p class="ops-desc" data-lang="en">I work with your team in three phases: we define the architecture and pipelines together, implement them in your environment, and take them to production with observability, closing with knowledge transfer.</p>
+
+        <a href="#projects" class="ops-link">
+          <span data-lang="es">Ver casos en producción</span>
+          <span data-lang="en">See production cases</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+
+        <ul class="ops-features" data-stagger>
+          {features.map((f) => (
+            <li class="ops-feature">
+              <span class="ops-feature__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={iconPaths[f.icon]} />
+              </span>
+              <div>
+                <p class="ops-feature__title" data-lang="es">{f.titleEs}</p>
+                <p class="ops-feature__title" data-lang="en">{f.titleEn}</p>
+                <p class="ops-feature__desc" data-lang="es">{f.descEs}</p>
+                <p class="ops-feature__desc" data-lang="en">{f.descEn}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div class="ops-tags" data-stagger>
+          {tags.map((t) => (
+            <span class="tag"><span data-lang="es">{t.es}</span><span data-lang="en">{t.en}</span></span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Animated pipeline visual -->
+      <div class="ops-media">
+        <div class="agent-visual" id="agent-visual" data-run-ms={phases.map((p) => p.runMs).join(',')}>
+          {phases.map((step, i) => (
+            <>
+              <div class="av-step" style={`grid-row: ${i * 2 + 1};`}>
+                <div class="av-card">
+                  <span class="av-badge av-badge--running font-mono">
+                    <svg class="av-spin" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.2-8.56"/></svg>
+                    <span data-lang="es">En curso</span><span data-lang="en">In progress</span>
+                  </span>
+                  <span class="av-badge av-badge--success font-mono">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span data-lang="es">Completado</span><span data-lang="en">Done</span>
+                  </span>
+
+                  <div class="av-card__head">
+                    <span class="ic-tile av-card__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={iconPaths[step.icon]} /></span>
+                    <span class="av-card__title" data-lang="es">{step.titleEs}</span>
+                    <span class="av-card__title" data-lang="en">{step.titleEn}</span>
+                  </div>
+
+                  <div class="av-substep">
+                    <span class="av-substep__stack av-substep__stack--1" aria-hidden="true"></span>
+                    <span class="av-substep__stack av-substep__stack--2" aria-hidden="true"></span>
+                    <div class="av-substep__card">
+                      <div class="av-substep__head">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m9 9 3 3-3 3"/><path d="M13 15h3"/></svg>
+                        <span data-lang="es">{step.substepEs}</span><span data-lang="en">{step.substepEn}</span>
+                      </div>
+                      <div class="av-substep__foot font-mono">
+                        <span data-lang="es">{step.moreEs}</span><span data-lang="en">{step.moreEn}</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {i < phases.length - 1 && (
+                <div class="av-connector" style={`grid-row: ${i * 2 + 2};`} aria-hidden="true">
+                  <svg width="12" height="56" viewBox="0 0 12 56" fill="none">
+                    <circle cx="6" cy="5" r="3.25" stroke="currentColor" stroke-width="1.5" />
+                    <line x1="6" y1="8.5" x2="6" y2="52" stroke="currentColor" stroke-width="1.5" />
+                  </svg>
+                </div>
+              )}
+
+              <div class="av-reason-slot" style={`grid-row: ${i * 2 + 1};`}>
+                <div class="av-reason" aria-live="polite">
+                  <div class="av-reason__view av-reason__view--running">
+                    <div class="av-reason__head">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0-3.5 10.9V17h7v-3.1A6 6 0 0 0 12 3z"/><path d="M9.5 21h5"/></svg>
+                      <span class="av-shimmer" data-lang="es">Trabajando</span>
+                      <span class="av-shimmer" data-lang="en">Working</span>
+                    </div>
+                    <div class="av-reason__body">
+                      <p class="av-reason__text" data-lang="es">{step.thinkingEs}</p>
+                      <p class="av-reason__text" data-lang="en">{step.thinkingEn}</p>
+                    </div>
+                  </div>
+
+                  <div class="av-reason__view av-reason__view--done">
+                    <button type="button" class="av-reason__head av-reason__toggle" aria-expanded="false">
+                      <svg class="av-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                      <span data-lang="es">Fase {i + 1} completada</span>
+                      <span data-lang="en">Phase {i + 1} complete</span>
+                    </button>
+                    <div class="av-collapsible">
+                      <p class="av-reason__text av-reason__thinking" data-lang="es">{step.thinkingEs}</p>
+                      <p class="av-reason__text av-reason__thinking" data-lang="en">{step.thinkingEn}</p>
+                    </div>
+                    <p class="av-reason__text av-reason__text--result" data-lang="es">{step.resultEs}</p>
+                    <p class="av-reason__text av-reason__text--result" data-lang="en">{step.resultEn}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ========================================================
+     Layout: text column + media column
+     ======================================================== */
+  .ops-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(2.5rem, 5vw, 6rem);
+  }
+
+  .ops-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 531px;
+  }
+
+  .ops-title {
+    margin: 0.25rem 0 1rem;
+    font-size: clamp(2.25rem, 4.2vw, 3.6rem);
+  }
+
+  .ops-desc {
+    max-width: 460px;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .ops-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 1.5rem;
+    font-weight: 500;
+    color: var(--signal-cyan);
+    transition: gap var(--transition-fast), opacity var(--transition-fast);
+  }
+
+  .ops-link:hover {
+    gap: 8px;
+    opacity: 0.8;
+  }
+
+  .ops-features {
+    list-style: none;
+    width: 100%;
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .ops-feature {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ops-feature__icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--text-muted);
+  }
+
+  .ops-feature__title {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .ops-feature__desc {
+    margin-top: 2px;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+  }
+
+  .ops-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 2rem;
+  }
+
+  .ops-media {
+    min-width: 0;
+  }
+
+  /* ========================================================
+     Agent visual: step cards (col 1) + reasoning (col 2)
+     ======================================================== */
+  .agent-visual {
+    display: grid;
+    grid-template-columns: minmax(0, 280px) minmax(190px, 240px);
+    column-gap: 32px;
+    align-items: start;
+    max-width: 552px;
+    margin: 0 auto;
+    padding: 34px 0 8px;
+  }
+
+  .av-step,
+  .av-connector {
+    grid-column: 1;
+  }
+
+  .av-reason-slot {
+    grid-column: 2;
+    position: relative;
+  }
+
+  /* ---- Step card ---- */
+  .av-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--line-highlight);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-card);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .av-card.is-running {
+    border-color: color-mix(in srgb, var(--signal-amber) 30%, var(--line-highlight));
+  }
+
+  /* Amber stroke travelling around the perimeter while running */
+  .av-card.is-running::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(from var(--av-angle, 0deg),
+      transparent 0deg, transparent 250deg, var(--signal-amber) 322deg, transparent 360deg);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: av-perimeter 1.4s linear infinite;
+    pointer-events: none;
+  }
+
+  .av-card.is-success {
+    border-color: var(--signal-emerald);
+    box-shadow: 0 0 0 3px var(--signal-emerald-glow), var(--shadow-card);
+  }
+
+  @property --av-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  @keyframes av-perimeter {
+    to { --av-angle: 360deg; }
+  }
+
+  .av-card__head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .av-card__icon {
+    width: 26px;
+    height: 26px;
+    padding: 4px;
+    color: var(--text-secondary);
+  }
+
+  .av-card__title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  /* ---- Status chip above the card ---- */
+  .av-badge {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 0;
+    align-items: center;
+    gap: 5px;
+    height: 24px;
+    padding: 0 9px;
+    border-radius: var(--r-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .av-badge.is-visible {
+    display: inline-flex;
+  }
+
+  .av-badge--running {
+    color: var(--signal-amber);
+    border-color: color-mix(in srgb, var(--signal-amber) 45%, transparent);
+    background: var(--signal-amber-glow);
+  }
+
+  .av-badge--success {
+    color: var(--signal-emerald);
+    border-color: color-mix(in srgb, var(--signal-emerald) 45%, transparent);
+    background: var(--signal-emerald-glow);
+  }
+
+  .av-spin {
+    animation: av-rotate 0.9s linear infinite;
+  }
+
+  @keyframes av-rotate {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ---- Nested sub-step widget with stacked cards behind ---- */
+  .av-substep {
+    position: relative;
+  }
+
+  .av-substep__stack {
+    position: absolute;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .av-substep__stack--1 { top: 6px; bottom: 6px; right: 2px; width: 24px; }
+  .av-substep__stack--2 { top: 3px; bottom: 3px; right: 5px; width: 20px; }
+
+  .av-substep__card {
+    position: relative;
+    margin-right: 8px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .av-substep__head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .av-substep__head svg {
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .av-substep__foot {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--line);
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+  }
+
+  /* ---- Connector between cards ---- */
+  .av-connector {
+    display: flex;
+    justify-content: center;
+    margin-top: -5px;
+    position: relative;
+    z-index: 2;
+    color: var(--line-highlight);
+  }
+
+  .av-connector circle {
+    fill: var(--bg-primary);
+  }
+
+  /* ---- Reasoning column ---- */
+  .av-reason {
+    display: none;
+    position: absolute;
+    inset: 0 0 auto 0;
+    padding-top: 8px;
+  }
+
+  .av-reason.is-active { display: block; }
+
+  .av-reason__view { display: none; }
+  .av-reason__view.is-visible { display: block; }
+
+  .av-reason__head {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .av-reason__toggle {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .av-reason__toggle:hover {
+    color: var(--text-secondary);
+  }
+
+  .av-chevron {
+    transition: transform var(--transition-base);
+  }
+
+  .av-reason__toggle[aria-expanded='true'] .av-chevron {
+    transform: rotate(180deg);
+  }
+
+  .av-reason__body {
+    border-left: 1px solid var(--line);
+    padding-left: 17px;
+    margin-top: 8px;
+  }
+
+  .av-reason__text {
+    font-size: 0.75rem;
+    line-height: 1.66;
+    color: var(--text-muted);
+  }
+
+  .av-reason__text--result {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+  }
+
+  .av-collapsible {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height var(--transition-base);
+  }
+
+  .av-collapsible.is-open {
+    max-height: 160px;
+  }
+
+  .av-reason__thinking {
+    border-left: 1px solid var(--line);
+    padding-left: 17px;
+    margin-top: 8px;
+  }
+
+  .av-shimmer {
+    background: linear-gradient(100deg, var(--text-muted) 30%, var(--text-primary) 50%, var(--text-muted) 70%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: av-shimmer 1.8s linear infinite;
+  }
+
+  @keyframes av-shimmer {
+    from { background-position: 180% 0; }
+    to { background-position: -80% 0; }
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 1024px) {
+    .ops-row {
+      grid-template-columns: 1fr;
+    }
+
+    .ops-text {
+      max-width: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .agent-visual {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: 16px;
+    }
+
+    .av-reason__head,
+    .av-reason__text {
+      font-size: 0.8rem;
+    }
+
+    .av-reason__text--result {
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .av-card.is-running::before,
+    .av-spin,
+    .av-shimmer {
+      animation: none;
+    }
+
+    .av-shimmer {
+      color: var(--text-secondary);
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var root = document.getElementById('agent-visual');
+    if (!root) return;
+
+    var runMs = (root.getAttribute('data-run-ms') || '').split(',').map(Number);
+    var FLASH_MS = 700;
+    var cards = root.querySelectorAll('.av-card');
+    var reasons = root.querySelectorAll('.av-reason');
+
+    function toggle(el, cls, on) {
+      if (el) el.classList.toggle(cls, on);
+    }
+
+    // status: 'pending' | 'running' | 'success' | 'done'
+    function setStatus(i, status) {
+      var card = cards[i];
+      var reason = reasons[i];
+      if (!card || !reason) return;
+
+      var started = status !== 'pending';
+      var finished = status === 'success' || status === 'done';
+
+      toggle(card, 'is-running', status === 'running');
+      toggle(card, 'is-success', status === 'success');
+      toggle(card.querySelector('.av-badge--running'), 'is-visible', status === 'running');
+      toggle(card.querySelector('.av-badge--success'), 'is-visible', finished);
+      toggle(reason, 'is-active', started);
+      toggle(reason.querySelector('.av-reason__view--running'), 'is-visible', status === 'running');
+      toggle(reason.querySelector('.av-reason__view--done'), 'is-visible', finished);
+    }
+
+    function runSequence() {
+      var t = 350;
+      runMs.forEach(function(ms, i) {
+        setTimeout(function() { setStatus(i, 'running'); }, t);
+        setTimeout(function() { setStatus(i, 'success'); }, t + ms);
+        setTimeout(function() { setStatus(i, 'done'); }, t + ms + FLASH_MS);
+        // Next step starts as soon as the current one succeeds
+        t += ms;
+      });
+    }
+
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduce) {
+      runMs.forEach(function(_, i) { setStatus(i, 'done'); });
+    } else if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) {
+          runSequence();
+          io.disconnect();
+        }
+      }, { threshold: 0.4 });
+      io.observe(root);
+    } else {
+      runSequence();
+    }
+
+    // "Completado en Xs" expands the reasoning text above the result
+    root.querySelectorAll('.av-reason__toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var next = btn.getAttribute('aria-expanded') !== 'true';
+        btn.setAttribute('aria-expanded', String(next));
+        var collapsible = btn.parentElement?.querySelector('.av-collapsible');
+        toggle(collapsible, 'is-open', next);
+      });
+    });
+  });
+</script>

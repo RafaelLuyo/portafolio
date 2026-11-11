@@ -1,0 +1,448 @@
+---
+/**
+ * StackSection.astro — Technology ecosystem.
+ * A full-bleed marquee of every tool (two rows drifting in opposite directions)
+ * followed by a category explorer: segmented tabs + one large panel at a time.
+ */
+
+interface TechItem {
+  name: string;
+  icon: string;
+  detail: string;
+  /** Monochrome dark logos (e.g. Kafka) need inverting to stay visible on the dark theme */
+  invert?: boolean;
+}
+
+interface StackCategory {
+  id: string;
+  titleEs: string;
+  titleEn: string;
+  descEs: string;
+  descEn: string;
+  items: TechItem[];
+}
+
+const categories: StackCategory[] = [
+  {
+    id: 'cloud',
+    titleEs: 'Cloud Platforms',
+    titleEn: 'Cloud Platforms',
+    descEs: 'Infraestructura multi-cloud enterprise de alta resiliencia.',
+    descEn: 'Enterprise resilient multi-cloud platform architectures.',
+    items: [
+      { name: 'Google Cloud (GCP)', icon: '/assets/icons/google-cloud.svg', detail: 'GKE, Cloud Run, IAM & VPC' },
+      { name: 'Amazon Web Services', icon: '/assets/icons/aws.svg', detail: 'EKS, EC2, S3, RDS & Transit Gateway' },
+      { name: 'Microsoft Azure', icon: '/assets/icons/azure.svg', detail: 'AKS, Pipelines & Azure Entra ID' },
+      { name: 'Cloudflare', icon: '/assets/icons/cloudflare.svg', detail: 'DNS, WAF & Zero Trust Edge' }
+    ]
+  },
+  {
+    id: 'containers',
+    titleEs: 'Contenedores & Orquestación',
+    titleEn: 'Containers & Orchestration',
+    descEs: 'Plataformas de contenedores de misión crítica y service mesh.',
+    descEn: 'Mission-critical container orchestration and mesh networking.',
+    items: [
+      { name: 'Red Hat OpenShift', icon: '/assets/icons/openshift.svg', detail: 'Multi-Cluster Core (BCRP/TAPP)' },
+      { name: 'Kubernetes (RKE2, GKE)', icon: '/assets/icons/kubernetes.svg', detail: 'High Availability Production' },
+      { name: 'Docker & OCI Runtimes', icon: '/assets/icons/docker.svg', detail: 'Immutable Container Packaging' },
+      { name: 'Helm & OCI Charts', icon: '/assets/icons/helm.svg', detail: 'Declarative Package Management' }
+    ]
+  },
+  {
+    id: 'iac-gitops',
+    titleEs: 'IaC & Gobernanza GitOps',
+    titleEn: 'IaC & GitOps Governance',
+    descEs: 'Gestión declarativa del estado deseado y secretos.',
+    descEn: 'Declarative desired state management and dynamic secrets.',
+    items: [
+      { name: 'Terraform', icon: '/assets/icons/terraform.svg', detail: 'Modular Infrastructure as Code' },
+      { name: 'HashiCorp Vault', icon: '/assets/icons/vault.svg', detail: 'Dynamic PKI & Ephemeral Secrets' },
+      { name: 'ArgoCD', icon: '/assets/icons/argo.svg', detail: 'Continuous Reconciliation GitOps' },
+      { name: 'Ansible', icon: '/assets/icons/ansible.svg', detail: 'Configuration Management Automation' }
+    ]
+  },
+  {
+    id: 'cicd',
+    titleEs: 'CI/CD & DevSecOps',
+    titleEn: 'CI/CD & DevSecOps Delivery',
+    descEs: 'Tuberías de entrega continua con auditoría criptográfica.',
+    descEn: 'Continuous delivery pipelines with cryptographic verification.',
+    items: [
+      { name: 'GitLab CI/CD', icon: '/assets/icons/gitlab.svg', detail: 'Golden Path Banking Delivery' },
+      { name: 'GitHub Actions', icon: '/assets/icons/github-actions.svg', detail: 'Multi-Arch Workflows & OIDC' },
+      { name: 'Jenkins Enterprise', icon: '/assets/icons/jenkins.svg', detail: 'Hierarchical 3-Tier Pipelines' },
+      { name: 'SonarQube DevSecOps', icon: '/assets/icons/sonarqube.svg', detail: 'Static Analysis & Quality Gates' }
+    ]
+  },
+  {
+    id: 'observability',
+    titleEs: 'Observabilidad & Telemetría',
+    titleEn: 'Observability & SRE',
+    descEs: 'Métricas, logs centralizados y trazabilidad transaccional.',
+    descEn: 'Metrics, centralized logging, and distributed tracing.',
+    items: [
+      { name: 'Prometheus', icon: '/assets/icons/prometheus.svg', detail: 'Cluster Metrics & Alertmanager' },
+      { name: 'Grafana & Tempo', icon: '/assets/icons/grafana.svg', detail: 'OpenTelemetry Distributed Tracing' },
+      { name: 'Elasticsearch (ELK)', icon: '/assets/icons/elasticsearch.svg', detail: 'High-Volume Enterprise Log Ingestion' }
+    ]
+  },
+  {
+    id: 'data',
+    titleEs: 'Mensajería & Datos en Memoria',
+    titleEn: 'Streaming & In-Memory Data',
+    descEs: 'Streaming de eventos, caché y almacenes en memoria de alto rendimiento.',
+    descEn: 'Event streaming, caching, and high-performance in-memory stores.',
+    items: [
+      { name: 'Apache Kafka', icon: '/assets/icons/kafka.svg', detail: 'Event Streaming & Messaging', invert: true },
+      { name: 'Redis', icon: '/assets/icons/redis.svg', detail: 'In-Memory Cache & Pub/Sub' },
+      { name: 'KeyDB', icon: '/assets/icons/db.svg', detail: 'Multithreaded Redis-Compatible Store' }
+    ]
+  }
+];
+// Every tool, split into two marquee rows
+const allItems = categories.flatMap((c) => c.items);
+const half = Math.ceil(allItems.length / 2);
+const marqueeRows = [allItems.slice(0, half), allItems.slice(half)];
+---
+
+<section id="stack" class="portfolio-section" data-tone="light" aria-labelledby="stack-title">
+  <div class="container">
+    <div class="eyebrow">
+      <span class="signal-dot"></span>
+      <span data-lang="es">Ecosistema Tecnológico</span>
+      <span data-lang="en">Technology Ecosystem</span>
+    </div>
+
+    <div class="section-header">
+      <h2 id="stack-title">
+        <span data-lang="es">Tecnologías & Herramientas de Producción</span>
+        <span data-lang="en">Production Tech Stack & Tooling</span>
+      </h2>
+      <div class="section-description">
+        <p data-lang="es">Plataformas, orquestadores, motores de seguridad y estándares de observabilidad implementados en entornos reales de producción bancaria y empresarial.</p>
+        <p data-lang="en">Platforms, orchestrators, security engines, and observability standards deployed across live production banking and enterprise environments.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full-bleed marquee: every tool, two rows drifting in opposite directions -->
+  <div class="marquee" aria-hidden="true">
+    {marqueeRows.map((row, r) => (
+      <div class={`marquee__row ${r === 1 ? 'marquee__row--reverse' : ''}`}>
+        {[0, 1].map(() => (
+          <div class="marquee__track">
+            {row.map((item) => (
+              <span class="marquee__chip">
+                <img src={item.icon} alt="" width="22" height="22" loading="lazy" class:list={[{ 'icon-invert': item.invert }]} />
+                {item.name}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+
+  <!-- Category explorer -->
+  <div class="container">
+    <div class="segmented stack-tabs" role="tablist" aria-label="Categorías tecnológicas">
+      <span class="segmented__pill" aria-hidden="true"></span>
+      {categories.map((cat, i) => (
+        <button
+          type="button"
+          role="tab"
+          class={`segmented__btn ${i === 0 ? 'is-active' : ''}`}
+          id={`stack-tab-${cat.id}`}
+          aria-controls={`stack-panel-${cat.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          <span data-lang="es">{cat.titleEs}</span>
+          <span data-lang="en">{cat.titleEn}</span>
+        </button>
+      ))}
+    </div>
+
+    <div class="stack-panels">
+      {categories.map((cat, i) => (
+        <div
+          class="stack-panel"
+          role="tabpanel"
+          id={`stack-panel-${cat.id}`}
+          aria-labelledby={`stack-tab-${cat.id}`}
+          hidden={i !== 0}
+        >
+          <div class="stack-panel__intro">
+            <span class="stack-panel__count">{String(cat.items.length).padStart(2, '0')}</span>
+            <h3 class="stack-panel__title" data-lang="es">{cat.titleEs}</h3>
+            <h3 class="stack-panel__title" data-lang="en">{cat.titleEn}</h3>
+            <p class="stack-panel__desc" data-lang="es">{cat.descEs}</p>
+            <p class="stack-panel__desc" data-lang="en">{cat.descEn}</p>
+          </div>
+
+          <ul class="stack-panel__grid">
+            {cat.items.map((item, j) => (
+              <li class="card stack-tile" style={`--d:${j * 70}ms`}>
+                <span class="stack-tile__icon">
+                  <img src={item.icon} alt="" width="40" height="40" loading="lazy" class:list={[{ 'icon-invert': item.invert }]} />
+                </span>
+                <span class="stack-tile__name">{item.name}</span>
+                <span class="stack-tile__detail">{item.detail}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .icon-invert {
+    filter: var(--icon-mono);
+  }
+
+  /* ---------- Marquee (full bleed, edge-faded) ---------- */
+  .marquee {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 0 0 5rem;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .marquee__row {
+    display: flex;
+    width: max-content;
+    animation: marquee 60s linear infinite;
+  }
+
+  .marquee__row--reverse {
+    animation-direction: reverse;
+    animation-duration: 70s;
+  }
+
+  .marquee:hover .marquee__row {
+    animation-play-state: paused;
+  }
+
+  .marquee__track {
+    display: flex;
+    gap: 14px;
+    padding-right: 14px;
+  }
+
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+
+  .marquee__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 22px 12px 14px;
+    border-radius: var(--r-pill);
+    background: var(--bg-card);
+    border: 1px solid var(--line-dim);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+
+  .marquee__chip img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
+
+  /* ---------- Tabs ---------- */
+  .stack-tabs {
+    margin-bottom: 2rem;
+  }
+
+  .stack-tabs .segmented__btn {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+  }
+
+  /* ---------- Panel ---------- */
+  .stack-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 3rem;
+    align-items: start;
+    padding: 3rem;
+    border-radius: var(--r-xl);
+    background:
+      radial-gradient(80% 120% at 0% 0%, rgba(124, 108, 255, 0.14), transparent 60%),
+      radial-gradient(60% 90% at 100% 100%, rgba(62, 200, 255, 0.1), transparent 60%),
+      var(--bg-secondary);
+    border: 1px solid var(--line-dim);
+  }
+
+  .stack-panel[hidden] {
+    display: none;
+  }
+
+  .stack-panel__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: sticky;
+    top: 6rem;
+  }
+
+  .stack-panel__count {
+    font-size: clamp(4rem, 8vw, 7rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+    background: var(--aurora);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .stack-panel__title {
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    letter-spacing: -0.035em;
+  }
+
+  .stack-panel__desc {
+    font-size: 1.05rem;
+    max-width: 36ch;
+  }
+
+  .stack-panel__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .stack-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.5rem;
+    border-radius: var(--r-lg);
+    background: var(--bg-card);
+    border-color: var(--line);
+  }
+
+  .stack-panel:not([hidden]) .stack-tile {
+    animation: tile-in 0.6s var(--ease) both;
+    animation-delay: var(--d);
+  }
+
+  @keyframes tile-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+      filter: blur(6px);
+    }
+  }
+
+  .stack-tile__icon {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    padding: 12px;
+    margin-bottom: 0.9rem;
+    border-radius: 16px;
+    background: var(--fill-2);
+    border: 1px solid var(--line);
+  }
+
+  .stack-tile__icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .stack-tile__name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  .stack-tile__detail {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+  }
+
+  @media (max-width: 1024px) {
+    .stack-panel {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .stack-panel__intro {
+      position: static;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .stack-panel {
+      padding: 1.5rem;
+    }
+
+    .stack-panel__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .marquee__chip {
+      font-size: 0.9rem;
+      padding: 10px 18px 10px 12px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__row,
+    .stack-panel:not([hidden]) .stack-tile {
+      animation: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('#stack [role="tab"]'));
+    if (!tabs.length) return;
+
+    function activate(tab, focus) {
+      tabs.forEach(function(t) {
+        var on = t === tab;
+        t.setAttribute('tabindex', on ? '0' : '-1');
+        var panel = document.getElementById(t.getAttribute('aria-controls'));
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) {
+        tab.focus();
+        tab.click(); // lets BaseLayout move the segmented pill
+      }
+    }
+
+    tabs.forEach(function(tab, i) {
+      tab.addEventListener('click', function() { activate(tab, false); });
+      tab.addEventListener('keydown', function(e) {
+        var next = null;
+        if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+        if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+        if (e.key === 'Home') next = tabs[0];
+        if (e.key === 'End') next = tabs[tabs.length - 1];
+        if (next) {
+          e.preventDefault();
+          activate(next, true);
+        }
+      });
+    });
+  });
+</script>

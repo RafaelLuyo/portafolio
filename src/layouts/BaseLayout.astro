@@ -1,0 +1,1153 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { 
+  title, 
+  description = "DevOps & Cloud Platform Engineer — High-Availability Kubernetes, GitOps Governance, and Cloud Infrastructure" 
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es" data-type="software" data-radius="round" data-theme="dark" data-tone="dark" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="site-kind" content="software" />
+    <meta name="page-type" content="software" />
+    
+    <!-- SEO -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:site_name" content="Rafael Luyo Ramirez — DevOps & Cloud Platform Engineer" />
+    <meta property="og:locale" content="es_PE" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Rafael Luyo Ramirez" />
+    <meta name="keywords" content="DevOps Engineer, Cloud Platform Engineer, GCP, AWS, Azure, OpenShift, Kubernetes, RKE2, Cilium, Terraform, HashiCorp Vault, ArgoCD, GitOps, CI/CD" />
+    <link rel="canonical" href={Astro.url} />
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#000000" id="meta-theme-color" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rafael Luyo Ramirez",
+        "jobTitle": "DevOps & Cloud Platform Engineer",
+        "description": "Especialista en infraestructura cloud resiliente, Kubernetes en producción (OpenShift, RKE2), gobernanza GitOps y observabilidad integral.",
+        "url": "https://rafaelluyo.dev",
+        "sameAs": [
+          "https://github.com/RafaelLuyo",
+          "https://www.linkedin.com/in/rafael-luyo-ramirez/"
+        ],
+        "knowsAbout": ["Kubernetes", "OpenShift", "RKE2", "Cilium eBPF", "GCP", "AWS", "Azure", "Terraform", "HashiCorp Vault", "ArgoCD", "GitOps", "CI/CD"],
+        "email": "rafa.libra06@gmail.com"
+      }
+    </script>
+    
+    <title>{title}</title>
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <!-- Native CSS Scroll-Driven Progress Bar -->
+    <div class="scroll-progress-line" aria-hidden="true"></div>
+
+    <!-- Skip Links (House Rule Accessibility) -->
+    <a href="#main-content" class="skip-link" data-lang="es">Saltar al contenido principal</a>
+    <a href="#main-content" class="skip-link" data-lang="en">Skip to main content</a>
+    
+    <!-- Fixed Top Navigation (Crafted to taste-skill standards) -->
+    <header class="site-header" id="site-header">
+      <div class="nav-container">
+        <!-- Brand Monogram & Identity -->
+        <a href="#home" class="nav-brand" aria-label="Rafael Luyo Home">
+          <span class="brand-text">
+            <span class="brand-name">DevOps Platform</span>
+          </span>
+        </a>
+
+        <!-- Desktop Navigation Waypoints -->
+        <nav class="nav-menu" aria-label="Navegación principal">
+          <a href="#home" class="nav-link active" data-section="home">
+            <span data-lang="es">Inicio</span><span data-lang="en">Overview</span>
+          </a>
+          <a href="#experience" class="nav-link" data-section="experience">
+            <span data-lang="es">Trayectoria</span><span data-lang="en">Experience</span>
+          </a>
+          <a href="#modelo-operacion" class="nav-link" data-section="modelo-operacion">
+            <span data-lang="es">Modelo</span><span data-lang="en">Model</span>
+          </a>
+          <a href="#projects" class="nav-link" data-section="projects">
+            <span data-lang="es">Proyectos</span><span data-lang="en">Projects</span>
+          </a>
+          <a href="#stack" class="nav-link" data-section="stack">
+            <span data-lang="es">Stack</span><span data-lang="en">Stack</span>
+          </a>
+          <a href="#certifications" class="nav-link" data-section="certifications">
+            <span data-lang="es">Credenciales</span><span data-lang="en">Credentials</span>
+          </a>
+        </nav>
+
+        <!-- Right Controls: Bilingual Switcher & CTA -->
+        <div class="nav-actions">
+          <!-- Cyberpunk Dual Micro-Toggle -->
+          <button class="cyber-lang-toggle font-mono" id="lang-toggle" aria-label="Cambiar idioma" title="Switch Language (ES / EN)">
+            <span class="cyber-toggle-track">
+              <span class="cyber-toggle-thumb" id="lang-thumb"></span>
+              <span class="cyber-lang-code active" data-lang-opt="es">ES</span>
+              <span class="cyber-lang-code" data-lang-opt="en">EN</span>
+            </span>
+            <span class="cyber-status-led"></span>
+          </button>
+
+          <!-- Direct CTA Button -->
+          <a href="#contacto" class="btn btn-secondary nav-cta">
+            <span data-lang="es">Contacto</span>
+            <span data-lang="en">Get in Touch</span>
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button 
+            class="mobile-menu-btn" 
+            id="mobile-menu-btn" 
+            aria-label="Abrir menú"
+            aria-expanded="false"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="4" y1="7" x2="20" y2="7"/>
+              <line x1="4" y1="12" x2="20" y2="12"/>
+              <line x1="4" y1="17" x2="20" y2="17"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+      <div class="mobile-nav__overlay" id="mobile-nav-overlay"></div>
+      <div class="mobile-nav__drawer">
+        <div class="mobile-nav__head">
+          <span class="brand-monogram">RL</span>
+          <button class="mobile-nav__close" id="mobile-nav-close" aria-label="Cerrar menú">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <nav class="mobile-nav__links">
+          <a href="#home" class="mobile-nav__link" data-section="home">
+            <span data-lang="es">Inicio</span><span data-lang="en">Overview</span>
+          </a>
+          <a href="#experience" class="mobile-nav__link" data-section="experience">
+            <span data-lang="es">Trayectoria</span><span data-lang="en">Experience</span>
+          </a>
+          <a href="#modelo-operacion" class="mobile-nav__link" data-section="modelo-operacion">
+            <span data-lang="es">Modelo de Operación</span><span data-lang="en">Operating Model</span>
+          </a>
+          <a href="#projects" class="mobile-nav__link" data-section="projects">
+            <span data-lang="es">Proyectos</span><span data-lang="en">Projects</span>
+          </a>
+          <a href="#stack" class="mobile-nav__link" data-section="stack">
+            <span data-lang="es">Tecnologías</span><span data-lang="en">Tech Stack</span>
+          </a>
+          <a href="#certifications" class="mobile-nav__link" data-section="certifications">
+            <span data-lang="es">Credenciales</span><span data-lang="en">Credentials</span>
+          </a>
+          <a href="#contacto" class="mobile-nav__link" data-section="contacto">
+            <span data-lang="es">Contacto</span><span data-lang="en">Contact</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main-content">
+      <slot />
+    </main>
+
+    <!-- Footer (Disciplined High-Taste Architecture) -->
+    <footer class="site-footer tone-dark" id="site-footer" data-tone="dark">
+      <div class="container footer-container">
+        <div class="footer-grid">
+          <!-- Identity + oversized email -->
+          <div class="footer-col footer-identity">
+            <a href="#home" class="footer-brand">Rafael Luyo Ramirez</a>
+            <p class="footer-desc" data-lang="es">Especialista DevOps & Cloud Platform Engineer · Lima, Perú</p>
+            <p class="footer-desc" data-lang="en">DevOps Specialist & Cloud Platform Engineer · Lima, Peru</p>
+            <a href="mailto:rafa.libra06@gmail.com" class="footer-email">rafa.libra06@gmail.com</a>
+            <p class="footer-meta font-mono">Kubernetes (OpenShift, RKE2) · GitOps · Cilium eBPF · HashiCorp Vault · Multi-Cloud</p>
+          </div>
+
+          <!-- Sitemap -->
+          <nav class="footer-col" aria-label="Sitemap">
+            <p class="footer-heading" data-lang="es">NAVEGACIÓN</p>
+            <p class="footer-heading" data-lang="en">NAVIGATION</p>
+            <ul class="footer-nav-list">
+              <li><a href="#home" class="footer-nav-link" data-lang="es">Inicio</a><a href="#home" class="footer-nav-link" data-lang="en">Overview</a></li>
+              <li><a href="#experience" class="footer-nav-link" data-lang="es">Trayectoria</a><a href="#experience" class="footer-nav-link" data-lang="en">Experience</a></li>
+              <li><a href="#modelo-operacion" class="footer-nav-link" data-lang="es">Modelo de Operación</a><a href="#modelo-operacion" class="footer-nav-link" data-lang="en">Operating Model</a></li>
+              <li><a href="#projects" class="footer-nav-link" data-lang="es">Proyectos de Producción</a><a href="#projects" class="footer-nav-link" data-lang="en">Production Projects</a></li>
+              <li><a href="#stack" class="footer-nav-link" data-lang="es">Ecosistema Tecnológico</a><a href="#stack" class="footer-nav-link" data-lang="en">Tech Stack</a></li>
+              <li><a href="#certifications" class="footer-nav-link" data-lang="es">Credenciales</a><a href="#certifications" class="footer-nav-link" data-lang="en">Credentials</a></li>
+              <li><a href="#contacto" class="footer-nav-link" data-lang="es">Contacto Directo</a><a href="#contacto" class="footer-nav-link" data-lang="en">Direct Contact</a></li>
+            </ul>
+          </nav>
+
+          <!-- Social -->
+          <nav class="footer-col" aria-label="Conexiones">
+            <p class="footer-heading" data-lang="es">CONEXIONES</p>
+            <p class="footer-heading" data-lang="en">CONNECT</p>
+            <ul class="footer-nav-list">
+              <li>
+                <a href="https://github.com/RafaelLuyo" target="_blank" rel="noopener noreferrer" class="footer-nav-link">
+                  <span>GitHub (@RafaelLuyo)</span>
+                  <svg class="footer-ext" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/rafael-luyo-ramirez/" target="_blank" rel="noopener noreferrer" class="footer-nav-link">
+                  <span>LinkedIn Profile</span>
+                  <svg class="footer-ext" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="mailto:rafa.libra06@gmail.com" class="footer-nav-link">
+                  <span>rafa.libra06@gmail.com</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="footer-legal">
+            <span class="footer-copy" data-lang="es">© 2026 Rafael Luyo Ramirez. Todos los derechos reservados.</span>
+            <span class="footer-copy" data-lang="en">© 2026 Rafael Luyo Ramirez. All rights reserved.</span>
+            <p class="trademark-text">
+              Product names, logos, and brands mentioned are trademarks of their respective owners. Used for nominative technical stack identification only.
+            </p>
+          </div>
+          <a href="#home" class="footer-totop" id="footer-totop">
+            <span data-lang="es">Volver arriba</span>
+            <span data-lang="en">Back to top</span>
+            <span class="footer-totop__icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 19V5M5 12l7-7 7 7"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Giant wordmark: dim outline at rest, aurora light under the cursor -->
+      <div class="footer-wordmark" aria-hidden="true">
+        <span class="footer-wordmark__base">Rafael Luyo</span>
+        <span class="footer-wordmark__lit">Rafael Luyo</span>
+      </div>
+    </footer>
+
+    <style>
+      /* ========================================================
+         Fixed Top Header Navigation
+         ======================================================== */
+      .site-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        padding: 12px 16px 0;
+        pointer-events: none;
+        animation: header-in 1.1s var(--ease-out-soft) 1.25s both;
+      }
+
+      @keyframes header-in {
+        from {
+          opacity: 0;
+          transform: translateY(-14px);
+        }
+      }
+
+      /* Floating glass bar: rounded, hairline border, inner top highlight */
+      .nav-container {
+        pointer-events: auto;
+        position: relative;
+        max-width: var(--container-max);
+        height: 56px;
+        margin: 0 auto;
+        padding: 0 10px 0 14px;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 1rem;
+        border-radius: 16px;
+        border: 1px solid var(--line-dim);
+        background: color-mix(in srgb, var(--bg-elevated) 38%, transparent);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        box-shadow:
+          inset 0 1px 0 0 color-mix(in srgb, #ffffff 6%, transparent),
+          0 0 0 0 transparent;
+        transition: background-color 0.5s var(--ease), border-color 0.5s var(--ease), box-shadow 0.5s var(--ease);
+      }
+
+      .site-header.scrolled .nav-container {
+        background: color-mix(in srgb, var(--bg-elevated) 78%, transparent);
+        border-color: var(--line);
+        box-shadow:
+          inset 0 1px 0 0 color-mix(in srgb, #ffffff 7%, transparent),
+          0 16px 40px -20px rgba(0, 0, 0, 0.45);
+      }
+
+      /* A faint light leak along the top edge of the bar */
+      .nav-container::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 18%;
+        right: 18%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--aurora-iris) 70%, transparent), transparent);
+        opacity: 0.6;
+        pointer-events: none;
+      }
+
+      /* Brand Identity */
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+      }
+
+      .brand-monogram {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, var(--fill-3) 0%, var(--fill-1) 100%);
+        border: 1px solid var(--line-highlight);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      }
+
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand-name {
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+      }
+
+      .brand-tag {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+        letter-spacing: 0.02em;
+      }
+
+      /* Nav Menu (Desktop) */
+      .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+
+      .nav-link {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        padding: 7px 12px;
+        border-radius: 9px;
+        transition: color var(--transition-fast), background-color var(--transition-fast);
+        text-decoration: none;
+      }
+
+      .nav-link:hover {
+        color: var(--text-primary);
+        background: var(--fill-2);
+      }
+
+      .nav-link.active {
+        color: var(--text-primary);
+      }
+
+      /* Nav Actions */
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.6rem;
+      }
+
+      /* Solid compact button, like a desktop-app "Download" */
+      .nav-cta.btn {
+        height: 34px;
+        padding: 0 14px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 10px;
+        border: 0;
+        color: var(--action-primary-ink);
+        background: var(--action-primary);
+        backdrop-filter: none;
+        box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18), 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .nav-cta.btn:hover {
+        background: var(--action-primary-hover);
+        box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18), 0 0 0 4px var(--fill-2);
+      }
+
+      /* Futuristic Dual Micro-Toggle */
+      .cyber-lang-toggle {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--fill-1);
+        border: 1px solid var(--line);
+        border-radius: var(--r-pill);
+        padding: 3px 6px 3px 3px;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        height: 28px;
+        box-sizing: border-box;
+      }
+
+      .cyber-lang-toggle:hover {
+        border-color: var(--line-highlight);
+        background: var(--fill-2);
+      }
+
+      .cyber-toggle-track {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: var(--fill-2);
+        border-radius: var(--r-pill);
+        padding: 1px;
+        height: 20px;
+      }
+
+      .cyber-toggle-thumb {
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        width: 24px;
+        height: 18px;
+        border-radius: var(--r-pill);
+        background: var(--action-primary);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .cyber-lang-code {
+        position: relative;
+        z-index: 1;
+        width: 24px;
+        text-align: center;
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        transition: color 0.2s ease;
+      }
+
+      .cyber-lang-code.active {
+        color: var(--action-primary-ink);
+      }
+
+      .cyber-status-led {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--signal-emerald);
+        box-shadow: 0 0 6px var(--signal-emerald);
+      }
+
+      /* Mobile Hamburger */
+      .mobile-menu-btn {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: var(--fill-1);
+        border: 1px solid var(--line);
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 6px;
+        border-radius: var(--r-sm);
+        transition: all var(--transition-fast);
+      }
+
+      .mobile-menu-btn:hover {
+        color: var(--text-primary);
+        border-color: var(--line-highlight);
+      }
+
+      @media (max-width: 1024px) {
+        .nav-menu, .nav-cta {
+          display: none !important;
+        }
+
+        .nav-container {
+          grid-template-columns: 1fr auto;
+        }
+
+        .mobile-menu-btn {
+          display: flex;
+        }
+      }
+
+      /* ---------- Mobile Navigation Drawer ---------- */
+      .mobile-nav {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity var(--transition-base);
+      }
+
+      .mobile-nav.open {
+        pointer-events: auto;
+        opacity: 1;
+      }
+
+      .mobile-nav__overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+      }
+
+      .mobile-nav__drawer {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 300px;
+        max-width: 85vw;
+        background: var(--bg-secondary);
+        border-left: 1px solid var(--line);
+        padding: 1.75rem;
+        transform: translateX(100%);
+        transition: transform var(--transition-base);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .mobile-nav.open .mobile-nav__drawer {
+        transform: translateX(0);
+      }
+
+      .mobile-nav__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .mobile-nav__close {
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 4px;
+      }
+
+      .mobile-nav__links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+
+      .mobile-nav__link {
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        border-radius: var(--r-sm);
+        transition: all var(--transition-fast);
+      }
+
+      .mobile-nav__link:hover,
+      .mobile-nav__link.active {
+        color: var(--text-primary);
+        background: var(--fill-2);
+      }
+
+      /* ---------- Footer ---------- */
+      .site-footer {
+        --fx: 50%;
+        --fy: 50%;
+        position: relative;
+        z-index: 10;
+        background: var(--bg-primary);
+        border-top: 1px solid var(--line-dim);
+        transition: background-color var(--tone-duration) var(--ease-apple);
+        padding-top: 6rem;
+        overflow: hidden;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1fr);
+        gap: 4rem;
+        padding-bottom: 4rem;
+      }
+
+      .footer-brand {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        letter-spacing: -0.02em;
+        margin-bottom: 0.4rem;
+      }
+
+      .footer-desc {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+      }
+
+      .footer-email {
+        display: inline-block;
+        margin: 2.25rem 0 1.5rem;
+        font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+        font-weight: 600;
+        letter-spacing: -0.04em;
+        line-height: 1.1;
+        background: linear-gradient(90deg, var(--text-primary), var(--text-primary)) left bottom / 0% 2px no-repeat, none;
+        color: var(--text-primary);
+        transition: background-size 0.5s var(--ease), color 0.3s var(--ease);
+      }
+
+      .footer-email:hover {
+        background: var(--aurora) left bottom / 100% 2px no-repeat;
+      }
+
+      .footer-meta {
+        font-size: 0.74rem;
+        color: var(--text-muted);
+        line-height: 1.7;
+        max-width: 46ch;
+      }
+
+      .footer-heading {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 1.25rem;
+        text-transform: capitalize;
+      }
+
+      .footer-nav-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+
+      .footer-nav-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 1.05rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        letter-spacing: -0.01em;
+        transition: color var(--transition-fast), transform var(--transition-fast);
+      }
+
+      .footer-nav-link:hover {
+        color: var(--text-primary);
+        transform: translateX(3px);
+      }
+
+      .footer-ext {
+        opacity: 0.6;
+      }
+
+      .footer-bottom {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 2rem;
+        padding: 2rem 0;
+        border-top: 1px solid var(--line-dim);
+      }
+
+      .footer-legal {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+
+      .footer-copy {
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+      }
+
+      .trademark-text {
+        font-size: 0.74rem;
+        color: var(--text-muted);
+        max-width: 70ch;
+      }
+
+      .footer-totop {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+
+      .footer-totop__icon {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        transition: transform var(--transition-base), background-color var(--transition-base), color var(--transition-base);
+      }
+
+      .footer-totop:hover {
+        color: var(--text-primary);
+      }
+
+      .footer-totop:hover .footer-totop__icon {
+        transform: translateY(-3px);
+        background: var(--action-primary);
+        color: var(--action-primary-ink);
+      }
+
+      /* ---- Giant wordmark ---- */
+      .footer-wordmark {
+        position: relative;
+        margin-top: 1rem;
+        margin-bottom: -0.05em;
+        font-size: 17.2vw;
+        font-weight: 700;
+        line-height: 0.82;
+        letter-spacing: -0.065em;
+        text-align: center;
+        white-space: nowrap;
+        user-select: none;
+      }
+
+      .footer-wordmark__base {
+        display: block;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.16);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 85%);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .footer-wordmark__lit {
+        position: absolute;
+        inset: 0;
+        display: block;
+        color: transparent;
+        background: var(--aurora);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-mask-image: radial-gradient(22vw circle at var(--fx) var(--fy), #000 0%, transparent 70%);
+        mask-image: radial-gradient(22vw circle at var(--fx) var(--fy), #000 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.6s var(--ease);
+      }
+
+      .site-footer.is-lit .footer-wordmark__lit {
+        opacity: 1;
+      }
+
+      @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+          .footer-wordmark {
+            animation: wordmark-rise linear both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 50%;
+          }
+
+          @keyframes wordmark-rise {
+            from {
+              opacity: 0;
+              transform: translateY(30%);
+              letter-spacing: 0.02em;
+            }
+          }
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 3rem;
+        }
+
+        .footer-identity {
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .site-header {
+          animation: none;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .site-header {
+          padding: 8px 10px 0;
+        }
+
+        .site-footer {
+          padding-top: 4rem;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+
+    <!-- Scripts -->
+    <script is:inline>
+      // Force Permanent Dark Theme
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // ==========================================
+        // Futuristic Bilingual Language Engine
+        // ==========================================
+        const langToggle = document.getElementById('lang-toggle');
+        const langThumb = document.getElementById('lang-thumb');
+        const langCodes = document.querySelectorAll('.cyber-lang-code');
+
+        function applyLanguage(lang) {
+          document.documentElement.lang = lang;
+          localStorage.setItem('lang', lang);
+
+          if (langThumb) {
+            langThumb.style.transform = lang === 'en' ? 'translateX(24px)' : 'translateX(0)';
+          }
+
+          langCodes.forEach(function(code) {
+            if (code.getAttribute('data-lang-opt') === lang) {
+              code.classList.add('active');
+            } else {
+              code.classList.remove('active');
+            }
+          });
+        }
+
+        const initialLang = localStorage.getItem('lang') || 'es';
+        applyLanguage(initialLang);
+
+        langToggle?.addEventListener('click', function() {
+          const current = document.documentElement.lang;
+          const next = current === 'es' ? 'en' : 'es';
+          // Cross-fade the whole page between languages where supported
+          if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.startViewTransition(function() { applyLanguage(next); });
+          } else {
+            applyLanguage(next);
+          }
+        });
+
+        // ==========================================
+        // Scroll Spy (Active Section Tracking)
+        // ==========================================
+        const header = document.getElementById('site-header');
+        const sections = document.querySelectorAll('.portfolio-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav__link');
+
+        function updateActiveSection() {
+          const scrollY = window.scrollY;
+
+          if (header) {
+            if (scrollY > 20) {
+              header.classList.add('scrolled');
+            } else {
+              header.classList.remove('scrolled');
+            }
+          }
+
+          const checkY = scrollY + 160;
+          
+          sections.forEach(function(section) {
+            const top = section.offsetTop;
+            const height = section.offsetHeight;
+            const id = section.getAttribute('id');
+            
+            if (checkY >= top && checkY < top + height) {
+              navLinks.forEach(function(link) {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === id) {
+                  link.classList.add('active');
+                }
+              });
+              mobileNavLinks.forEach(function(link) {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === id) {
+                  link.classList.add('active');
+                }
+              });
+            }
+          });
+        }
+
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+          if (scrollTimeout) clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(updateActiveSection, 15);
+        }, { passive: true });
+        updateActiveSection();
+
+        // ==========================================
+        // Smooth Anchor Scroll
+        // ==========================================
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+          anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (!targetId || targetId === '#') return;
+            const target = document.querySelector(targetId);
+            if (target) {
+              e.preventDefault();
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              history.pushState(null, null, targetId);
+            }
+            closeMobileNav();
+          });
+        });
+
+        // ==========================================
+        // Mobile Navigation Drawer
+        // ==========================================
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileNav = document.getElementById('mobile-nav');
+        const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+        const mobileNavClose = document.getElementById('mobile-nav-close');
+
+        function openMobileNav() {
+          mobileNav?.classList.add('open');
+          mobileNav?.setAttribute('aria-hidden', 'false');
+          mobileMenuBtn?.setAttribute('aria-expanded', 'true');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+          mobileNav?.classList.remove('open');
+          mobileNav?.setAttribute('aria-hidden', 'true');
+          mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        }
+
+        mobileMenuBtn?.addEventListener('click', openMobileNav);
+        mobileNavOverlay?.addEventListener('click', closeMobileNav);
+        mobileNavClose?.addEventListener('click', closeMobileNav);
+        
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') closeMobileNav();
+        });
+
+        // ==========================================
+        // Segmented controls: active state + sliding pill
+        // (buttons with role="tab" are handled by their component)
+        // ==========================================
+        document.querySelectorAll('.segmented').forEach(function(group) {
+          var pill = group.querySelector('.segmented__pill');
+          var btns = group.querySelectorAll('.segmented__btn');
+          function sync() {
+            var active = group.querySelector('.segmented__btn.is-active');
+            if (!pill || !active) return;
+            pill.style.width = active.offsetWidth + 'px';
+            pill.style.transform = 'translateX(' + active.offsetLeft + 'px)';
+          }
+          btns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+              btns.forEach(function(b) {
+                b.classList.toggle('is-active', b === btn);
+                if (b.getAttribute('role') === 'tab') b.setAttribute('aria-selected', String(b === btn));
+                else b.setAttribute('aria-pressed', String(b === btn));
+              });
+              sync();
+            });
+          });
+          sync();
+          window.addEventListener('resize', sync, { passive: true });
+          if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
+        });
+
+        // ==========================================
+        // Footer wordmark lights up under the cursor
+        // ==========================================
+        var footer = document.getElementById('site-footer');
+        var wordmark = footer && footer.querySelector('.footer-wordmark');
+        if (footer && wordmark && window.matchMedia('(hover: hover)').matches) {
+          footer.addEventListener('pointermove', function(e) {
+            var r = wordmark.getBoundingClientRect();
+            footer.style.setProperty('--fx', (e.clientX - r.left) + 'px');
+            footer.style.setProperty('--fy', (e.clientY - r.top) + 'px');
+            footer.classList.add('is-lit');
+          }, { passive: true });
+          footer.addEventListener('pointerleave', function() {
+            footer.classList.remove('is-lit');
+          });
+        }
+
+        // ==========================================
+        // Cursor light on cards (Stripe-style)
+        // ==========================================
+        if (window.matchMedia('(hover: hover)').matches) {
+          document.querySelectorAll('.card').forEach(function(card) {
+            card.addEventListener('pointermove', function(e) {
+              var r = card.getBoundingClientRect();
+              card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+              card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+            }, { passive: true });
+          });
+        }
+
+        // ==========================================
+        // Page tone (Mercury-style): whichever [data-tone] section crosses
+        // the middle of the viewport sets the palette for the whole page.
+        // ==========================================
+        var root = document.documentElement;
+        var metaTheme = document.getElementById('meta-theme-color');
+        var toneSections = document.querySelectorAll('section[data-tone]');
+        function setTone(tone) {
+          if (root.dataset.tone === tone) return;
+          root.dataset.tone = tone;
+          if (metaTheme) metaTheme.setAttribute('content', tone === 'light' ? '#f3f3f1' : '#000000');
+        }
+        if (toneSections.length && 'IntersectionObserver' in window) {
+          var toneObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) setTone(entry.target.dataset.tone);
+            });
+          }, { rootMargin: '-50% 0px -50% 0px' });
+          toneSections.forEach(function(sec) { toneObserver.observe(sec); });
+        }
+
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // ==========================================
+        // Section headlines: split into words that rise in one after
+        // another (Linear-style). Text nodes are wrapped in place, so the
+        // bilingual spans keep working.
+        // ==========================================
+        var splitTargets = document.querySelectorAll('.portfolio-section:not(.hero-section) h2:not(.no-split)');
+        splitTargets.forEach(function(h) {
+          var walker = document.createTreeWalker(h, NodeFilter.SHOW_TEXT);
+          var nodes = [];
+          while (walker.nextNode()) nodes.push(walker.currentNode);
+          var perLang = {};
+          nodes.forEach(function(node) {
+            if (!node.nodeValue.trim()) return;
+            var langEl = node.parentElement.closest('[data-lang]');
+            var key = langEl ? langEl.getAttribute('data-lang') : '_';
+            var frag = document.createDocumentFragment();
+            node.nodeValue.split(/(\s+)/).forEach(function(part) {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              var w = document.createElement('span');
+              w.className = 'split-w';
+              perLang[key] = (perLang[key] || 0) + 1;
+              w.style.setProperty('--wi', String(perLang[key] - 1));
+              w.textContent = part;
+              frag.appendChild(w);
+            });
+            node.parentNode.replaceChild(frag, node);
+          });
+          h.classList.add('is-split');
+        });
+
+        // Children of these groups enter one after another
+        var staggerGroups = document.querySelectorAll('[data-stagger]');
+        staggerGroups.forEach(function(group) {
+          Array.prototype.forEach.call(group.children, function(child, i) {
+            child.style.setProperty('--si', String(i));
+          });
+        });
+
+        // One observer flips .is-in on headlines, stagger groups and .reveal
+        var inTargets = document.querySelectorAll('h2.is-split, [data-stagger], .reveal, [data-inview]');
+        if ('IntersectionObserver' in window && !reduceMotion) {
+          var inObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-in', 'visible');
+                inObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0, rootMargin: '0px 0px -14% 0px' });
+          inTargets.forEach(function(el) { inObserver.observe(el); });
+        } else {
+          inTargets.forEach(function(el) { el.classList.add('is-in', 'visible'); });
+        }
+
+        // ==========================================
+        // Marquees speed up with scroll velocity, then ease back
+        // ==========================================
+        var marqueeTracks = document.querySelectorAll('.marquee__row');
+        if (marqueeTracks.length && !reduceMotion && document.getAnimations) {
+          var lastY = window.scrollY, boost = 0, ticking = false;
+          function applyBoost() {
+            boost *= 0.92;
+            var rate = 1 + Math.min(boost, 6);
+            marqueeTracks.forEach(function(t) {
+              t.getAnimations().forEach(function(a) { a.playbackRate = rate; });
+            });
+            if (boost > 0.02) requestAnimationFrame(applyBoost); else ticking = false;
+          }
+          window.addEventListener('scroll', function() {
+            var y = window.scrollY;
+            boost += Math.abs(y - lastY) / 60;
+            lastY = y;
+            if (!ticking) { ticking = true; requestAnimationFrame(applyBoost); }
+          }, { passive: true });
+        }
+
+        // ==========================================
+        // Scroll Reveal Animations (legacy .reveal handled above)
+        // ==========================================
+      });
+    </script>
+  </body>
+</html>

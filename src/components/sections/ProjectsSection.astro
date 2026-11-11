@@ -1,0 +1,1169 @@
+---
+/**
+ * ProjectsSection.astro — Production case studies as an asymmetric bento.
+ * Each card opens with a "stage": the client's logo as the hub of a small
+ * topology, with the project's technologies orbiting it. Hovering a card makes
+ * data flow along the links. Filters are a segmented control with a sliding pill.
+ */
+
+interface Project {
+  id: string;
+  filterKey: 'bcrp' | 'promart' | 'orexe';
+  companyName: string;
+  categoryEs: string;
+  categoryEn: string;
+  metricBadge: string;
+  gridSpan: 'featured' | 'standard';
+  titleEs: string;
+  titleEn: string;
+  descEs: string;
+  descEn: string;
+  technologies: { name: string; icon: string }[];
+}
+
+// Hub logo and stage tint (RGB) per client
+const clients: Record<Project['filterKey'], { logo: string; tint: string }> = {
+  bcrp: { logo: '/assets/logos/tapp_white.png', tint: '62, 200, 255' },
+  promart: { logo: '/assets/logos/promart.png', tint: '255, 111, 181' },
+  orexe: { logo: '/assets/logos/orexe_white.png', tint: '48, 209, 140' },
+};
+
+// Place n technology nodes on an ellipse around the hub (percent of the stage)
+const orbit = (n: number) =>
+  Array.from({ length: n }, (_, i) => {
+    const a = (-90 + (360 / n) * i + (n % 2 ? 0 : 180 / n)) * (Math.PI / 180);
+    return { x: +(50 + Math.cos(a) * 36).toFixed(2), y: +(44 + Math.sin(a) * 29).toFixed(2) };
+  });
+
+// Each project gets a stage visual that shows what it actually is
+type Visual = 'orbit' | 'cluster' | 'traces' | 'yaml' | 'traffic' | 'pr';
+const visuals: Record<string, Visual> = {
+  'bcrp-golden-path': 'orbit',
+  'promart-rke2': 'cluster',
+  'bcrp-observability': 'traces',
+  'promart-yaml': 'yaml',
+  'promart-gateway-api': 'traffic',
+  'orexe-github-migration': 'pr',
+};
+
+// Bento rhythm: wide/narrow, narrow/wide, ...
+const isWide = (i: number) => i % 4 === 0 || i % 4 === 3;
+
+const projects: Project[] = [
+  // 1. BCRP / TAPP (Golden Path) — FLAGSHIP FEATURED
+  {
+    id: 'bcrp-golden-path',
+    filterKey: 'bcrp',
+    companyName: 'BCRP / TAPP',
+    categoryEs: 'Ingeniería de Plataforma & CI/CD',
+    categoryEn: 'Platform Engineering & CI/CD',
+    metricBadge: 'Patrón Golden Path 3-Tier',
+    gridSpan: 'featured',
+    titleEs: 'Arquitectura Jerárquica de 3 Repositorios (Golden Path)',
+    titleEn: 'Hierarchical 3-Repository Architecture (Golden Path)',
+    descEs: 'Implementación del patrón Golden Path para desacoplar políticas globales inmutables, arquetipos tecnológicos reutilizables y parámetros de negocio declarativos con inyección dinámica de credenciales efímeras en HashiCorp Vault.',
+    descEn: 'Engineered an enterprise Golden Path architecture, decoupling immutable organizational policies, reusable technical archetypes, and declarative application manifests with dynamic HashiCorp Vault credential rotation.',
+    technologies: [
+      { name: 'OpenShift', icon: '/assets/icons/openshift.svg' },
+      { name: 'Kubernetes', icon: '/assets/icons/kubernetes.svg' },
+      { name: 'HashiCorp Vault', icon: '/assets/icons/vault.svg' },
+      { name: 'SonarQube', icon: '/assets/icons/sonarqube.svg' },
+      { name: 'Docker', icon: '/assets/icons/docker.svg' },
+      { name: 'Jenkins', icon: '/assets/icons/jenkins.svg' }
+    ]
+  },
+
+  // 2. PROMART (RKE2 HA + Cilium) — FLAGSHIP FEATURED
+  {
+    id: 'promart-rke2',
+    filterKey: 'promart',
+    companyName: 'PROMART',
+    categoryEs: 'Cloud Híbrida & Redes eBPF',
+    categoryEn: 'Hybrid Cloud & eBPF Networking',
+    metricBadge: '6 Nodos HA · eBPF Datapath',
+    gridSpan: 'featured',
+    titleEs: 'Clúster RKE2 HA On-Premise con Cilium & GKE Rancher',
+    titleEn: 'On-Premise HA RKE2 Cluster with Cilium & GKE Rancher',
+    descEs: 'Aprovisionamiento en alta disponibilidad de Kubernetes RKE2 sobre Ubuntu Server con CNI Cilium potenciado por eBPF, administrado centralizadamente con Rancher Manager desplegado en Google Cloud GKE.',
+    descEn: 'High-availability deployment of Kubernetes RKE2 on hardened Ubuntu Server with eBPF-powered Cilium CNI, managed centrally via Rancher Manager deployed on Google Cloud GKE.',
+    technologies: [
+      { name: 'Kubernetes', icon: '/assets/icons/kubernetes.svg' },
+      { name: 'Google Cloud GKE', icon: '/assets/icons/google-cloud.svg' },
+      { name: 'Ubuntu Server', icon: '/assets/icons/ubuntu.svg' },
+      { name: 'Helm', icon: '/assets/icons/helm.svg' },
+      { name: 'ArgoCD', icon: '/assets/icons/argo.svg' }
+    ]
+  },
+
+  // 3. BCRP / TAPP (Observability Platform)
+  {
+    id: 'bcrp-observability',
+    filterKey: 'bcrp',
+    companyName: 'BCRP / TAPP',
+    categoryEs: 'Observabilidad & SRE',
+    categoryEn: 'Observability & SRE',
+    metricBadge: 'p99 < 45ms · 14k spans/s',
+    gridSpan: 'standard',
+    titleEs: 'Plataforma de Observabilidad Full-Stack (Elastic, Tempo & Grafana)',
+    titleEn: 'Full-Stack Telemetry Platform (Elastic, Tempo & Grafana)',
+    descEs: 'Plataforma unificada de telemetría ingiriendo logs masivos con Elastic Stack y trazabilidad transaccional distribuida de microservicios con Grafana Tempo, OpenTelemetry y paneles en tiempo real.',
+    descEn: 'Unified telemetry platform managing high-volume log ingestion via Elastic Stack and microservices distributed tracing using Grafana Tempo, OpenTelemetry, and Grafana dashboards.',
+    technologies: [
+      { name: 'Grafana', icon: '/assets/icons/grafana.svg' },
+      { name: 'Prometheus', icon: '/assets/icons/prometheus.svg' },
+      { name: 'Elasticsearch', icon: '/assets/icons/elasticsearch.svg' }
+    ]
+  },
+
+  // 4. PROMART (YAML Pipelines Migration)
+  {
+    id: 'promart-yaml',
+    filterKey: 'promart',
+    companyName: 'PROMART',
+    categoryEs: 'Modernización CI/CD',
+    categoryEn: 'CI/CD Modernization',
+    metricBadge: '100% Declarativo YAML',
+    gridSpan: 'standard',
+    titleEs: 'Migración a Pipelines Declarativos YAML en Azure DevOps',
+    titleEn: 'Declarative YAML Pipelines Migration in Azure DevOps',
+    descEs: 'Modernización integral de flujos de entrega continua migrando release pipelines clásicos (GUI obsoleta) hacia pipelines declarativos YAML como código, incorporando plantillas modulares y gates DevSecOps.',
+    descEn: 'Modernized CI/CD delivery by migrating legacy GUI release pipelines to version-controlled declarative YAML pipelines in Azure DevOps, integrating modular reusable templates and DevSecOps gates.',
+    technologies: [
+      { name: 'Microsoft Azure', icon: '/assets/icons/azure.svg' },
+      { name: 'Google Cloud Run', icon: '/assets/icons/google-cloud.svg' },
+      { name: 'Docker', icon: '/assets/icons/docker.svg' },
+      { name: 'SonarQube', icon: '/assets/icons/sonarqube.svg' }
+    ]
+  },
+
+  // 5. PROMART (Gateway API & Envoy L7 Routing)
+  {
+    id: 'promart-gateway-api',
+    filterKey: 'promart',
+    companyName: 'PROMART',
+    categoryEs: 'Cloud Networking & Ingress',
+    categoryEn: 'Cloud Networking & Ingress',
+    metricBadge: 'Enrutamiento Canary L7',
+    gridSpan: 'standard',
+    titleEs: 'Gateway API & L7 Canary Traffic Routing con Envoy en GKE',
+    titleEn: 'Gateway API & L7 Canary Traffic Routing with Envoy on GKE',
+    descEs: 'Implementación del estándar Kubernetes Gateway API con Envoy Ingress en Google Cloud GKE para desacoplar enrutamiento L7, división porcentual de tráfico Canary y validaciones de seguridad con Cloud Armor.',
+    descEn: 'Implemented Kubernetes Gateway API standard with Envoy Ingress on Google Cloud GKE to decouple L7 routing policies, canary traffic splitting, and edge security validation with Cloud Armor.',
+    technologies: [
+      { name: 'Google Cloud GKE', icon: '/assets/icons/google-cloud.svg' },
+      { name: 'Kubernetes', icon: '/assets/icons/kubernetes.svg' },
+      { name: 'Cloudflare', icon: '/assets/icons/cloudflare.svg' }
+    ]
+  },
+
+  // 6. OREXE (Azure DevOps → GitHub Actions migration & repository governance)
+  {
+    id: 'orexe-github-migration',
+    filterKey: 'orexe',
+    companyName: 'OREXE',
+    categoryEs: 'Modernización CI/CD & Gobernanza',
+    categoryEn: 'CI/CD Modernization & Governance',
+    metricBadge: 'Azure DevOps → GitHub · IA en PRs',
+    gridSpan: 'standard',
+    titleEs: 'Migración de Azure DevOps a GitHub Actions & Gobernanza de Repositorios',
+    titleEn: 'Azure DevOps to GitHub Actions Migration & Repository Governance',
+    descEs: 'Migración de pipelines de Azure DevOps a workflows de GitHub Actions reutilizables con environments y aprobaciones, junto a un modelo de gobernanza de repositorios en Azure DevOps y GitHub Enterprise: branch policies y rulesets, CODEOWNERS, status checks obligatorios y revisión de pull requests asistida por IA.',
+    descEn: 'Migrated Azure DevOps pipelines to reusable GitHub Actions workflows with environments and approvals, alongside a repository governance model across Azure DevOps and GitHub Enterprise: branch policies and rulesets, CODEOWNERS, required status checks and AI-assisted pull request reviews.',
+    technologies: [
+      { name: 'Azure DevOps', icon: '/assets/icons/azure.svg' },
+      { name: 'GitHub Actions', icon: '/assets/icons/github-actions.svg' },
+      { name: 'Git', icon: '/assets/icons/git.svg' }
+    ]
+  }
+];
+---
+
+<section id="projects" class="portfolio-section" data-tone="light" aria-labelledby="projects-title">
+  <div class="container">
+    <div class="eyebrow">
+      <span class="signal-dot"></span>
+      <span data-lang="es">Casos de Éxito en Producción</span>
+      <span data-lang="en">Production Engineering Systems</span>
+    </div>
+
+    <div class="section-header">
+      <h2 id="projects-title">
+        <span data-lang="es">Proyectos de Infraestructura</span>
+        <span data-lang="en">Infrastructure Projects</span>
+      </h2>
+      <div class="section-description">
+        <p data-lang="es">Sistemas diseñados e implementados en producción para entidades financieras, retail omnicanal y consultoría cloud de alta exigencia.</p>
+        <p data-lang="en">Production systems engineered for enterprise financial banking, omnichannel retail, and high-demand cloud consultancies.</p>
+      </div>
+    </div>
+
+    <!-- Segmented control -->
+    <div class="segmented" role="group" aria-label="Filtrar proyectos por empresa">
+      <span class="segmented__pill" aria-hidden="true"></span>
+      <button type="button" class="segmented__btn is-active" data-filter="all" aria-pressed="true">
+        <span data-lang="es">Todos</span><span data-lang="en">All Projects</span>
+      </button>
+      <button type="button" class="segmented__btn" data-filter="bcrp" aria-pressed="false">BCRP / TAPP</button>
+      <button type="button" class="segmented__btn" data-filter="promart" aria-pressed="false">PROMART</button>
+      <button type="button" class="segmented__btn" data-filter="orexe" aria-pressed="false">OREXE</button>
+    </div>
+
+    <div class="projects-grid" data-stagger="clip">
+      {projects.map((proj, idx) => {
+        const client = clients[proj.filterKey];
+        const nodes = orbit(proj.technologies.length);
+        return (
+          <article
+            class="card project-card"
+            data-company={proj.filterKey}
+            data-wide={isWide(idx) ? 'true' : 'false'}
+            style={`--tint: ${client.tint};`}
+          >
+            <div class={`pc-stage tone-dark pc-stage--${visuals[proj.id] ?? 'orbit'}`} aria-hidden="true">
+              {(visuals[proj.id] ?? 'orbit') === 'orbit' && (
+                <>
+                  <svg class="pc-links" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <ellipse class="pc-ring" cx="50" cy="44" rx="36" ry="29" />
+                    {nodes.map((n) => (
+                      <line class="pc-link" x1="50" y1="44" x2={n.x} y2={n.y} />
+                    ))}
+                  </svg>
+                  <div class="pc-hub">
+                    <img src={client.logo} alt="" loading="lazy" />
+                  </div>
+                  {proj.technologies.map((t, i) => (
+                    <span class="pc-node" style={`left:${nodes[i].x}%; top:${nodes[i].y}%; --d:${i * 60}ms;`}>
+                      <img src={t.icon} alt="" width="22" height="22" loading="lazy" />
+                    </span>
+                  ))}
+                </>
+              )}
+
+              {visuals[proj.id] === 'cluster' && (
+                <div class="vz-cluster">
+                  <div class="vz-cluster__mgr">
+                    <img src="/assets/icons/google-cloud.svg" alt="" width="16" height="16" />
+                    <span>Rancher Manager · GKE</span>
+                  </div>
+                  <span class="vz-cluster__wire"></span>
+                  <div class="vz-cluster__frame">
+                    <span class="vz-cluster__label">rke2-prod · cilium eBPF</span>
+                    {['cp-1', 'cp-2', 'cp-3', 'wk-1', 'wk-2', 'wk-3'].map((n, i) => (
+                      <span class={`vz-node ${i < 3 ? 'vz-node--cp' : ''}`} style={`--i:${i}; --load:${[38, 44, 31, 72, 64, 81][i]}%`}>
+                        <span class="vz-node__led"></span>
+                        <span class="vz-node__name">{n}</span>
+                        <span class="vz-node__bar"><span></span></span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {visuals[proj.id] === 'traces' && (
+                <div class="vz-traces">
+                  <svg class="vz-traces__spark" viewBox="0 0 300 60" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="spark-fill" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="rgb(62,200,255)" stop-opacity="0.35" />
+                        <stop offset="1" stop-color="rgb(62,200,255)" stop-opacity="0" />
+                      </linearGradient>
+                    </defs>
+                    <path class="vz-traces__area" d="M0,44 L20,40 L40,42 L60,30 L80,34 L100,26 L120,32 L140,22 L160,28 L180,18 L200,24 L220,16 L240,22 L260,14 L280,20 L300,12 L300,60 L0,60 Z" fill="url(#spark-fill)" />
+                    <path class="vz-traces__line" d="M0,44 L20,40 L40,42 L60,30 L80,34 L100,26 L120,32 L140,22 L160,28 L180,18 L200,24 L220,16 L240,22 L260,14 L280,20 L300,12" />
+                  </svg>
+                  <ul class="vz-traces__spans">
+                    {[
+                      ['gateway', 0, 100],
+                      ['auth-svc', 4, 22],
+                      ['payments', 26, 58],
+                      ['ledger', 34, 38],
+                      ['postgres.query', 46, 18],
+                    ].map(([name, start, width], i) => (
+                      <li style={`--s:${start}%; --w:${width}%; --i:${i}`}>
+                        <span class="vz-traces__name">{name}</span>
+                        <span class="vz-traces__track"><span class="vz-traces__bar"></span></span>
+                      </li>
+                    ))}
+                  </ul>
+                  <span class="vz-traces__scan"></span>
+                </div>
+              )}
+
+              {visuals[proj.id] === 'yaml' && (
+                <div class="vz-editor">
+                  <div class="vz-editor__tabs">
+                    <span class="vz-editor__tab vz-editor__tab--off">release-classic.json</span>
+                    <span class="vz-editor__tab">azure-pipelines.yml</span>
+                  </div>
+                  <pre class="vz-editor__code"><code><span class="ln">1</span><span class="k">trigger</span>: [ main ]
+<span class="ln">2</span><span class="k">stages</span>:
+<span class="ln">3</span>  - <span class="k">stage</span>: <span class="v">Build</span>
+<span class="ln">4</span>    <span class="k">jobs</span>:
+<span class="ln">5</span>      - <span class="k">template</span>: <span class="s">templates/docker-build.yml</span>
+<span class="ln">6</span>  - <span class="k">stage</span>: <span class="v">DevSecOps</span>
+<span class="ln">7</span>    <span class="k">jobs</span>:
+<span class="ln">8</span>      - <span class="k">template</span>: <span class="s">templates/sonarqube-gate.yml</span>
+<span class="ln">9</span>  - <span class="k">stage</span>: <span class="v">Deploy</span>
+<span class="ln">10</span>    <span class="k">environment</span>: <span class="s">cloud-run-prod</span><span class="caret"></span></code></pre>
+                </div>
+              )}
+
+              {visuals[proj.id] === 'traffic' && (
+                <div class="vz-traffic">
+                  <svg viewBox="0 0 600 240" preserveAspectRatio="none" class="vz-traffic__svg">
+                    <path id="lane-stable" class="vz-lane" d="M150,120 C270,120 280,70 420,70" />
+                    <path id="lane-canary" class="vz-lane vz-lane--canary" d="M150,120 C270,120 280,170 420,170" />
+                    <path id="lane-in" class="vz-lane vz-lane--in" d="M10,120 L150,120" />
+                    {[0, 0.35, 0.7].map((d) => (
+                      <circle r="3.5" class="vz-packet">
+                        <animateMotion dur="1.4s" begin={`${d}s`} repeatCount="indefinite"><mpath href="#lane-in" /></animateMotion>
+                      </circle>
+                    ))}
+                    {[0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6].map((d) => (
+                      <circle r="3.5" class="vz-packet">
+                        <animateMotion dur="1.8s" begin={`${d}s`} repeatCount="indefinite"><mpath href="#lane-stable" /></animateMotion>
+                      </circle>
+                    ))}
+                    <circle r="3.5" class="vz-packet vz-packet--canary">
+                      <animateMotion dur="1.8s" begin="0.5s" repeatCount="indefinite"><mpath href="#lane-canary" /></animateMotion>
+                    </circle>
+                  </svg>
+                  <span class="vz-traffic__gw">
+                    <img src="/assets/icons/envoy.svg" alt="" width="20" height="20" />
+                    Gateway API
+                  </span>
+                  <span class="vz-traffic__dst vz-traffic__dst--stable">
+                    <b>90%</b> stable · v1
+                  </span>
+                  <span class="vz-traffic__dst vz-traffic__dst--canary">
+                    <b>10%</b> canary · v2
+                  </span>
+                </div>
+              )}
+
+              {visuals[proj.id] === 'pr' && (
+                <div class="vz-pr">
+                  <div class="vz-pr__head">
+                    <span class="vz-pr__state">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M5 3.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm0 2.122a2.25 2.25 0 1 0-1.5 0v5.256a2.251 2.251 0 1 0 1.5 0V5.372ZM4.25 12a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm7.5-9.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm-2.25.75a2.25 2.25 0 1 1 3 2.122V8.5a3.75 3.75 0 0 1-3.75 3.75H6.56l1.22 1.22-1.06 1.06-3.03-3.03 3.03-3.03 1.06 1.06-1.22 1.22h2.19a2.25 2.25 0 0 0 2.25-2.25V5.372A2.25 2.25 0 0 1 9.5 3.25Z"/></svg>
+                      Merged
+                    </span>
+                    <span class="vz-pr__title">ci: migrate azure-pipelines → GitHub Actions <i>#128</i></span>
+                  </div>
+                  <div class="vz-pr__diff">
+                    <span class="del">− azure-pipelines.yml</span>
+                    <span class="add">+ .github/workflows/deploy.yml</span>
+                  </div>
+                  <ul class="vz-pr__checks">
+                    <li style="--i:0"><span class="tick"></span>Ruleset: main protected</li>
+                    <li style="--i:1"><span class="tick"></span>CODEOWNERS approval</li>
+                    <li style="--i:2"><span class="tick"></span>Required status checks</li>
+                  </ul>
+                  <div class="vz-pr__ai">
+                    <span class="vz-pr__bot">AI</span>
+                    <p>
+                      <span data-lang="es">Revisión automática: workflows reutilizables y OIDC correctos, sin secretos expuestos.</span>
+                      <span data-lang="en">Automated review: reusable workflows and OIDC look correct, no exposed secrets.</span>
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <span class="pc-metric">{proj.metricBadge}</span>
+            </div>
+
+            <div class="pc-body">
+              <p class="pc-meta">
+                <span class="pc-company">{proj.companyName}</span>
+                <span class="pc-cat" data-lang="es">{proj.categoryEs}</span>
+                <span class="pc-cat" data-lang="en">{proj.categoryEn}</span>
+              </p>
+              <h3 class="pc-title" data-lang="es">{proj.titleEs}</h3>
+              <h3 class="pc-title" data-lang="en">{proj.titleEn}</h3>
+              <p class="pc-desc" data-lang="es">{proj.descEs}</p>
+              <p class="pc-desc" data-lang="en">{proj.descEn}</p>
+              <ul class="pc-tech">
+                <li class="sr-only" data-lang="es">STACK UTILIZADO</li>
+                <li class="sr-only" data-lang="en">TECH STACK</li>
+                {proj.technologies.map((t) => <li>{t.name}</li>)}
+              </ul>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---------- Asymmetric bento ---------- */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .project-card {
+    grid-column: span 5;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--r-xl);
+  }
+
+  .project-card[data-wide='true'] {
+    grid-column: span 7;
+  }
+
+  .project-card[data-solo='true'] {
+    grid-column: span 12;
+  }
+
+  .project-card.is-hidden {
+    display: none !important;
+  }
+
+  .project-card.is-entering {
+    animation: card-in 0.6s var(--ease) both;
+  }
+
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.98);
+      filter: blur(6px);
+    }
+  }
+
+  /* ---------- Stage: client hub + orbiting technologies ---------- */
+  .pc-stage {
+    position: relative;
+    height: 280px;
+    background:
+      radial-gradient(60% 70% at 50% 50%, rgba(var(--tint), 0.16) 0%, transparent 70%),
+      radial-gradient(120% 90% at 50% 120%, rgba(124, 108, 255, 0.12) 0%, transparent 60%),
+      var(--bg-panel);
+    border-bottom: 1px solid var(--line-dim);
+    overflow: hidden;
+  }
+
+  /* fine dot field */
+  .pc-stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+    background-size: 18px 18px;
+    mask-image: radial-gradient(70% 80% at 50% 50%, #000, transparent);
+    -webkit-mask-image: radial-gradient(70% 80% at 50% 50%, #000, transparent);
+  }
+
+  .pc-links {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .pc-ring {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 1;
+    stroke-dasharray: 2 4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .pc-link {
+    stroke: rgba(var(--tint), 0.35);
+    stroke-width: 1;
+    stroke-dasharray: 3 5;
+    vector-effect: non-scaling-stroke;
+    transition: stroke var(--transition-base);
+  }
+
+  .project-card:hover .pc-link {
+    stroke: rgba(var(--tint), 0.9);
+    animation: data-flow 0.9s linear infinite;
+  }
+
+  @keyframes data-flow {
+    to { stroke-dashoffset: -16; }
+  }
+
+  .pc-hub {
+    position: absolute;
+    left: 50%;
+    top: 44%;
+    width: 84px;
+    height: 84px;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    border-radius: 24px;
+    background: rgba(20, 20, 24, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 0 8px rgba(var(--tint), 0.06), 0 0 60px rgba(var(--tint), 0.35);
+    transition: box-shadow var(--transition-slow);
+  }
+
+  .pc-hub img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .project-card:hover .pc-hub {
+    box-shadow: 0 0 0 12px rgba(var(--tint), 0.08), 0 0 90px rgba(var(--tint), 0.55);
+  }
+
+  .pc-node {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    padding: 11px;
+    border-radius: 14px;
+    background: rgba(28, 28, 32, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.8);
+    transition: transform 0.5s var(--ease) var(--d), border-color var(--transition-base);
+  }
+
+  .pc-node img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .project-card:hover .pc-node {
+    transform: translate(-50%, calc(-50% - 6px));
+    border-color: rgba(var(--tint), 0.5);
+  }
+
+  .pc-metric {
+    position: absolute;
+    left: 1.25rem;
+    bottom: 1.1rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: var(--r-pill);
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  /* ==========================================================
+     Per-project stage visuals (everything sits above the metric)
+     ========================================================== */
+  .vz-cluster,
+  .vz-traces,
+  .vz-editor,
+  .vz-traffic,
+  .vz-pr {
+    position: absolute;
+    inset: 1.4rem 1.5rem 3.9rem;
+  }
+
+  /* ---------- HA cluster (RKE2 + Cilium, managed from GKE) ---------- */
+  .vz-cluster {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .vz-cluster__mgr {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font: 500 0.72rem var(--font-mono);
+    color: var(--text-primary);
+    background: rgba(28, 28, 32, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .vz-cluster__wire {
+    width: 1px;
+    height: 18px;
+    background: linear-gradient(rgba(var(--tint), 0.8), rgba(var(--tint), 0.2));
+  }
+
+  .vz-cluster__frame {
+    position: relative;
+    flex: 1;
+    width: min(100%, 420px);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 22px 12px 12px;
+    border-radius: 16px;
+    border: 1px dashed rgba(var(--tint), 0.45);
+    background:
+      repeating-linear-gradient(60deg, rgba(var(--tint), 0.05) 0 1px, transparent 1px 14px),
+      rgba(var(--tint), 0.03);
+  }
+
+  .vz-cluster__label {
+    position: absolute;
+    top: 5px;
+    left: 12px;
+    font: 500 0.62rem var(--font-mono);
+    color: rgba(var(--tint), 0.9);
+  }
+
+  .vz-node {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 9px;
+    border-radius: 9px;
+    background: rgba(24, 24, 28, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    font: 500 0.66rem var(--font-mono);
+    color: var(--text-secondary);
+    position: relative;
+  }
+
+  .vz-node--cp {
+    border-color: rgba(var(--tint), 0.35);
+  }
+
+  .vz-node__led {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal-emerald);
+    box-shadow: 0 0 8px var(--signal-emerald);
+  }
+
+  .vz-node__bar {
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+  }
+
+  .vz-node__bar span {
+    display: block;
+    height: 100%;
+    width: var(--load);
+    background: rgb(var(--tint));
+    transform-origin: left;
+    transition: transform 0.8s var(--ease) calc(var(--i) * 70ms);
+  }
+
+  .project-card:hover .vz-node__bar span {
+    transform: scaleX(0.55);
+  }
+
+  .project-card:hover .vz-node__led {
+    animation: led 1.2s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.15s);
+  }
+
+  @keyframes led {
+    50% { opacity: 0.25; }
+  }
+
+  /* ---------- Distributed trace + latency sparkline ---------- */
+  .vz-traces {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .vz-traces__spark {
+    width: 100%;
+    height: 54px;
+    flex-shrink: 0;
+  }
+
+  .vz-traces__line {
+    fill: none;
+    stroke: rgb(62, 200, 255);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .vz-traces__spans {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .vz-traces__spans li {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .vz-traces__name {
+    font: 500 0.64rem var(--font-mono);
+    color: var(--text-muted);
+    padding-left: calc(var(--i) * 4px);
+    white-space: nowrap;
+  }
+
+  .vz-traces__track {
+    position: relative;
+    height: 10px;
+  }
+
+  .vz-traces__bar {
+    position: absolute;
+    left: var(--s);
+    width: var(--w);
+    top: 0;
+    bottom: 0;
+    border-radius: 3px;
+    background: linear-gradient(90deg, rgba(var(--tint), 0.95), rgba(124, 108, 255, 0.85));
+    opacity: calc(1 - var(--i) * 0.12);
+  }
+
+  .vz-traces__scan {
+    position: absolute;
+    top: 64px;
+    bottom: 0;
+    left: 106px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+    opacity: 0;
+  }
+
+  .project-card:hover .vz-traces__scan {
+    opacity: 1;
+    animation: scan 2.4s var(--ease) infinite;
+  }
+
+  @keyframes scan {
+    from { transform: translateX(0); }
+    to { transform: translateX(min(380px, 60vw)); }
+  }
+
+  /* ---------- Pipeline YAML editor ---------- */
+  .vz-editor {
+    border-radius: 14px;
+    background: rgba(10, 10, 12, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.9);
+  }
+
+  .vz-editor__tabs {
+    display: flex;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .vz-editor__tab {
+    padding: 7px 14px;
+    font: 500 0.66rem var(--font-mono);
+    color: var(--text-primary);
+    border-right: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: inset 0 -2px 0 rgb(var(--tint));
+  }
+
+  .vz-editor__tab--off {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    box-shadow: none;
+  }
+
+  .vz-editor__code {
+    margin: 0;
+    padding: 10px 14px;
+    font: 0.7rem/1.55 var(--font-mono);
+    color: var(--text-secondary);
+    white-space: pre;
+    overflow: hidden;
+  }
+
+  .vz-editor__code .ln {
+    display: inline-block;
+    width: 1.8em;
+    color: var(--text-dim);
+    user-select: none;
+  }
+
+  .vz-editor__code .k { color: rgb(var(--tint)); }
+  .vz-editor__code .v { color: var(--text-primary); }
+  .vz-editor__code .s { color: #a8e6a1; }
+
+  .vz-editor__code .caret {
+    display: inline-block;
+    width: 7px;
+    height: 1em;
+    margin-left: 2px;
+    vertical-align: -2px;
+    background: rgb(var(--tint));
+    animation: caret 1s steps(1) infinite;
+  }
+
+  @keyframes caret {
+    50% { opacity: 0; }
+  }
+
+  /* ---------- Gateway API canary split ---------- */
+  .vz-traffic__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .vz-lane {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.14);
+    stroke-width: 10;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .vz-lane--canary {
+    stroke: rgba(var(--tint), 0.22);
+    stroke-width: 4;
+  }
+
+  .vz-packet {
+    fill: #ffffff;
+  }
+
+  .vz-packet--canary {
+    fill: rgb(var(--tint));
+  }
+
+  .vz-traffic__gw,
+  .vz-traffic__dst {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: 11px;
+    font: 500 0.7rem var(--font-mono);
+    color: var(--text-secondary);
+    background: rgba(24, 24, 28, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transform: translateY(-50%);
+    white-space: nowrap;
+  }
+
+  .vz-traffic__gw {
+    left: 25%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-primary);
+  }
+
+  .vz-traffic__dst {
+    left: 70%;
+  }
+
+  .vz-traffic__dst b {
+    font: 700 0.95rem var(--font-sans);
+    color: var(--text-primary);
+  }
+
+  .vz-traffic__dst--stable { top: 29%; }
+
+  .vz-traffic__dst--canary {
+    top: 71%;
+    border-color: rgba(var(--tint), 0.5);
+  }
+
+  .vz-traffic__dst--canary b {
+    color: rgb(var(--tint));
+  }
+
+  /* ---------- Pull request with governance checks + AI review ---------- */
+  .vz-pr {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(10, 10, 12, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
+
+  .vz-pr__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .vz-pr__state {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: var(--r-pill);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #fff;
+    background: #8957e5;
+    flex-shrink: 0;
+  }
+
+  .vz-pr__title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vz-pr__title i {
+    font-style: normal;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .vz-pr__diff {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font: 500 0.66rem var(--font-mono);
+  }
+
+  .vz-pr__diff span {
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+
+  .vz-pr__diff .del { color: #ff8b8b; background: rgba(255, 80, 80, 0.12); }
+  .vz-pr__diff .add { color: #7ee2a8; background: rgba(48, 209, 88, 0.12); }
+
+  .vz-pr__checks {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+  }
+
+  .vz-pr__checks li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .vz-pr__checks .tick {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--signal-emerald);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm3.78 5.72-4.75 4.75a.75.75 0 0 1-1.06 0L4.22 8.72a.75.75 0 0 1 1.06-1.06l1.22 1.22 4.22-4.22a.75.75 0 0 1 1.06 1.06Z'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm3.78 5.72-4.75 4.75a.75.75 0 0 1-1.06 0L4.22 8.72a.75.75 0 0 1 1.06-1.06l1.22 1.22 4.22-4.22a.75.75 0 0 1 1.06 1.06Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  .project-card:hover .vz-pr__checks .tick {
+    animation: tick-pop 0.5s var(--ease) both;
+    animation-delay: calc(var(--i) * 0.18s);
+  }
+
+  @keyframes tick-pop {
+    from { transform: scale(0); }
+  }
+
+  .vz-pr__ai {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-top: auto;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(var(--tint), 0.08);
+    border: 1px solid rgba(var(--tint), 0.3);
+  }
+
+  .vz-pr__bot {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #000;
+    background: var(--aurora);
+  }
+
+  .vz-pr__ai p {
+    font-size: 0.7rem;
+    line-height: 1.45;
+    color: var(--text-primary);
+  }
+
+  @media (max-width: 640px) {
+    .vz-traces__spans li {
+      grid-template-columns: 80px 1fr;
+    }
+
+    .vz-editor__code {
+      font-size: 0.62rem;
+    }
+
+    .vz-traffic__gw { left: 22%; }
+    .vz-traffic__dst { left: 60%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card:hover .vz-node__led,
+    .project-card:hover .vz-traces__scan,
+    .vz-editor__code .caret,
+    .project-card:hover .vz-pr__checks .tick {
+      animation: none;
+    }
+  }
+
+  /* ---------- Body ---------- */
+  .pc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.75rem 2rem 2rem;
+    flex: 1;
+  }
+
+  .pc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .pc-company {
+    color: rgb(var(--tint));
+    font-weight: 600;
+  }
+
+  .pc-cat {
+    color: var(--text-muted);
+  }
+
+  .pc-title {
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    max-width: 30ch;
+  }
+
+  .pc-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 62ch;
+  }
+
+  .pc-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 1024px) {
+    .project-card,
+    .project-card[data-wide='true'] {
+      grid-column: span 12;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pc-stage {
+      height: 240px;
+    }
+
+    .pc-hub {
+      width: 64px;
+      height: 64px;
+      padding: 12px;
+      border-radius: 18px;
+    }
+
+    .pc-node {
+      width: 40px;
+      height: 40px;
+      padding: 9px;
+    }
+
+    .pc-body {
+      padding: 1.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card:hover .pc-link,
+    .project-card.is-entering {
+      animation: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('#projects .vz-traffic__svg').forEach(function(svg) {
+      if (!svg.pauseAnimations) return;
+      svg.pauseAnimations();
+      if (reduceMotion) return;
+      var card = svg.closest('.project-card');
+      card.addEventListener('mouseenter', function() { svg.unpauseAnimations(); });
+      card.addEventListener('mouseleave', function() { svg.pauseAnimations(); });
+    });
+
+    var group = document.querySelector('#projects .segmented');
+    if (!group) return;
+    var btns = group.querySelectorAll('.segmented__btn');
+    var cards = document.querySelectorAll('#projects .project-card');
+
+    // Re-flow the wide/narrow rhythm over the cards that remain visible
+    function relayout() {
+      var visible = Array.prototype.filter.call(cards, function(c) { return !c.classList.contains('is-hidden'); });
+      visible.forEach(function(c, i) {
+        c.setAttribute('data-wide', (i % 4 === 0 || i % 4 === 3) ? 'true' : 'false');
+        c.removeAttribute('data-solo');
+      });
+      if (visible.length % 2 === 1) visible[visible.length - 1].setAttribute('data-solo', 'true');
+    }
+
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var filter = btn.getAttribute('data-filter');
+        cards.forEach(function(card) {
+          var show = filter === 'all' || card.getAttribute('data-company') === filter;
+          card.classList.toggle('is-hidden', !show);
+          card.classList.remove('is-entering');
+          if (show) {
+            void card.offsetWidth;
+            card.classList.add('is-entering');
+          }
+        });
+        relayout();
+      });
+    });
+  });
+</script>

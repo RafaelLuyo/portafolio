@@ -1,0 +1,689 @@
+---
+/**
+ * ClusterTopologyConsole.astro
+ * High-Integrity Multi-Cluster Control Plane & Architecture Inspector
+ * Incorporating real full-color brand assets, live telemetry, and interactive inspection
+ */
+---
+
+<div class="topology-console" id="topologyConsole" aria-label="Interactive Cluster Architecture Console">
+  <!-- Console macOS / Linear Titanium Header Bar -->
+  <div class="console-head">
+    <div class="console-window-controls">
+      <span class="win-dot dot-close"></span>
+      <span class="win-dot dot-min"></span>
+      <span class="win-dot dot-max"></span>
+    </div>
+
+    <div class="console-head__status">
+      <span class="status-indicator-ping">
+        <span class="ping-circle ping-circle--animate"></span>
+        <span class="ping-circle"></span>
+      </span>
+      <span class="console-title font-mono">FABRIC // MULTI-CLUSTER CONTROL</span>
+    </div>
+
+    <div class="console-head__tabs">
+      <button type="button" class="tab-btn active" id="tabTopologyBtn">Topology</button>
+      <button type="button" class="tab-btn" id="tabTelemetryBtn">Live Stream</button>
+    </div>
+  </div>
+
+  <!-- View 1: Architecture Topology -->
+  <div class="console-body" id="viewTopology">
+    <!-- SVG Data Flow Links Background -->
+    <div class="topology-canvas">
+      <svg class="topo-connections" viewBox="0 0 520 230" fill="none" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="streamGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#10b981" stop-opacity="0.8"/>
+          </linearGradient>
+          <linearGradient id="streamGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#10b981" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.8"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Connecting Data Paths -->
+        <path d="M 110 65 C 170 65, 170 45, 230 45" stroke="url(#streamGrad1)" stroke-width="1.8" stroke-dasharray="4 3" class="pulse-flow"/>
+        <path d="M 110 65 C 170 65, 170 145, 230 145" stroke="url(#streamGrad1)" stroke-width="1.8" stroke-dasharray="4 3" class="pulse-flow"/>
+        <path d="M 330 45 C 370 45, 380 45, 410 45" stroke="url(#streamGrad2)" stroke-width="1.8" stroke-dasharray="4 3" class="pulse-flow"/>
+        <path d="M 330 145 C 370 145, 380 145, 410 145" stroke="url(#streamGrad2)" stroke-width="1.8" stroke-dasharray="4 3" class="pulse-flow"/>
+        <path d="M 280 85 L 280 115" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6"/>
+      </svg>
+
+      <!-- Topology Interactive Node Cards -->
+      <div class="topo-node-grid">
+        <!-- Node 1: Ingress Edge Gateway -->
+        <button type="button" class="topo-node-card active" data-node="envoy" style="grid-column: 1; grid-row: 1 / span 2; align-self: center;">
+          <div class="node-icon-wrap">
+            <img src="/assets/icons/cloudflare.svg" alt="Edge Ingress" class="node-icon" width="22" height="22" />
+          </div>
+          <div class="node-info">
+            <span class="node-title font-mono">Envoy Edge L7</span>
+            <span class="node-sub">API Gateway</span>
+          </div>
+          <span class="node-status-led led-ok"></span>
+        </button>
+
+        <!-- Node 2: OpenShift Production (TAPP) -->
+        <button type="button" class="topo-node-card" data-node="openshift" style="grid-column: 2; grid-row: 1;">
+          <div class="node-icon-wrap">
+            <img src="/assets/icons/openshift.svg" alt="OpenShift" class="node-icon" width="22" height="22" />
+          </div>
+          <div class="node-info">
+            <span class="node-title font-mono">OpenShift Core</span>
+            <span class="node-sub">TAPP Banking</span>
+          </div>
+          <span class="node-status-led led-ok"></span>
+        </button>
+
+        <!-- Node 3: On-Premise HA RKE2 + Cilium -->
+        <button type="button" class="topo-node-card" data-node="rke2" style="grid-column: 2; grid-row: 2;">
+          <div class="node-icon-wrap">
+            <img src="/assets/icons/kubernetes.svg" alt="Kubernetes RKE2" class="node-icon" width="22" height="22" />
+          </div>
+          <div class="node-info">
+            <span class="node-title font-mono">RKE2 + Cilium</span>
+            <span class="node-sub">eBPF HA Mesh</span>
+          </div>
+          <span class="node-status-led led-ok"></span>
+        </button>
+
+        <!-- Node 4: HashiCorp Vault -->
+        <button type="button" class="topo-node-card" data-node="vault" style="grid-column: 3; grid-row: 1;">
+          <div class="node-icon-wrap">
+            <img src="/assets/icons/vault.svg" alt="HashiCorp Vault" class="node-icon" width="22" height="22" />
+          </div>
+          <div class="node-info">
+            <span class="node-title font-mono">Vault Dynamic</span>
+            <span class="node-sub">PKI & Secrets</span>
+          </div>
+          <span class="node-status-led led-ok"></span>
+        </button>
+
+        <!-- Node 5: ArgoCD GitOps -->
+        <button type="button" class="topo-node-card" data-node="argocd" style="grid-column: 3; grid-row: 2;">
+          <div class="node-icon-wrap">
+            <img src="/assets/icons/argo.svg" alt="ArgoCD" class="node-icon" width="22" height="22" />
+          </div>
+          <div class="node-info">
+            <span class="node-title font-mono">ArgoCD Sync</span>
+            <span class="node-sub">Continuous Rec.</span>
+          </div>
+          <span class="node-status-led led-ok"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Real-Time Telemetry Inspector Drawer -->
+    <div class="console-inspector" id="consoleInspector">
+      <div class="insp-main">
+        <span class="insp-label font-mono">INSPECTED CLUSTER COMPONENT</span>
+        <span class="insp-name font-mono" id="inspName">Envoy Cloud Gateway & Kubernetes Gateway API</span>
+      </div>
+      <div class="insp-grid">
+        <div class="insp-cell">
+          <span class="cell-k font-mono">PROTOCOL</span>
+          <span class="cell-v font-mono" id="inspProto">HTTP/2 · gRPC · Envoy L7</span>
+        </div>
+        <div class="insp-cell">
+          <span class="cell-k font-mono">SECURITY</span>
+          <span class="cell-v font-mono" id="inspSec">mTLS + OIDC Federation</span>
+        </div>
+        <div class="insp-cell">
+          <span class="cell-k font-mono">OBSERVABILITY</span>
+          <span class="cell-v font-mono" id="inspObs">OpenTelemetry · Tempo Traces</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View 2: Live GitOps & Stream Log -->
+  <div class="console-body is-hidden" id="viewTelemetry">
+    <div class="telemetry-log font-mono">
+      <div class="log-row">
+        <span class="log-time">22:14:02.10</span>
+        <span class="log-badge badge-sync">SYNC</span>
+        <span class="log-target">argocd/tapp-payments</span>
+        <span class="log-msg">Reconciled release <code class="log-code">v2.4.1</code> with desired state (1.2s)</span>
+      </div>
+      <div class="log-row">
+        <span class="log-time">22:14:03.45</span>
+        <span class="log-badge badge-canary">CANARY</span>
+        <span class="log-target">envoy/gateway-l7</span>
+        <span class="log-msg">Traffic split shifted to 90% stable / 10% canary (p99: 14ms)</span>
+      </div>
+      <div class="log-row">
+        <span class="log-time">22:14:04.12</span>
+        <span class="log-badge badge-sec">VAULT</span>
+        <span class="log-target">vault/k8s-auth</span>
+        <span class="log-msg">Lease renewed for dynamic database role <code class="log-code">app-writer</code> (TTL 1h)</span>
+      </div>
+      <div class="log-row">
+        <span class="log-time">22:14:05.80</span>
+        <span class="log-badge badge-mesh">EBPF</span>
+        <span class="log-target">cilium/daemonset</span>
+        <span class="log-msg">Zero-trust network policy enforced across 48 pods in namespace <code class="log-code">tapp-core</code></span>
+      </div>
+      <div class="log-row">
+        <span class="log-time">22:14:06.22</span>
+        <span class="log-badge badge-ok">HEALTH</span>
+        <span class="log-target">cluster/healthcheck</span>
+        <span class="log-msg">All 3 control planes reporting nominal consensus (etcd quorum intact)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Console Footer Bar -->
+  <div class="console-foot font-mono">
+    <div class="foot-item">
+      <span class="foot-k">REVISION:</span>
+      <span class="foot-v">gitops/main#a3f9c1e</span>
+    </div>
+    <div class="foot-item">
+      <span class="foot-k">AVAILABILITY:</span>
+      <span class="foot-v text-emerald">99.99% NOMINAL</span>
+    </div>
+    <div class="foot-item">
+      <span class="foot-k">LATENCY:</span>
+      <span class="foot-v">12ms (p99)</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ========================================================
+     Cluster Topology Console — High-Tier Engineering Artifact
+     ======================================================== */
+  .topology-console {
+    width: 100%;
+    background: #0d1017;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--r-lg);
+    box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+    user-select: none;
+    transition: border-color var(--transition-base);
+  }
+
+  .topology-console:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+
+  /* ---- Header Bar ---- */
+  .console-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.15rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    gap: 0.75rem;
+  }
+
+  .console-window-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .win-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot-close { background: #ff5f56; }
+  .dot-min { background: #ffbd2e; }
+  .dot-max { background: #27c93f; }
+
+  .console-head__status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .status-indicator-ping {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ping-circle {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--signal-emerald);
+    display: block;
+  }
+
+  .ping-circle--animate {
+    position: absolute;
+    inset: -3px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--signal-emerald);
+    opacity: 0.4;
+    animation: pingPulse 2.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes pingPulse {
+    75%, 100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  .console-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+  }
+
+  .console-head__tabs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 2px;
+    border-radius: var(--r-sm);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .tab-btn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+
+  /* ---- View 1: Canvas & Nodes ---- */
+  .console-body {
+    position: relative;
+    padding: 1.25rem 1.25rem 1rem;
+    background: radial-gradient(circle at 50% 30%, rgba(56, 189, 248, 0.03) 0%, transparent 70%);
+  }
+
+  .console-body.is-hidden {
+    display: none;
+  }
+
+  .topology-canvas {
+    position: relative;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .topo-connections {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .pulse-flow {
+    animation: flowDash 30s linear infinite;
+  }
+
+  @keyframes flowDash {
+    to {
+      stroke-dashoffset: -400;
+    }
+  }
+
+  .topo-node-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 140px 170px 150px;
+    grid-template-rows: 1fr 1fr;
+    gap: 1.25rem 1.75rem;
+    width: 100%;
+  }
+
+  .topo-node-card {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.65rem 0.75rem;
+    background: rgba(18, 22, 32, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--r-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .topo-node-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(24, 30, 44, 0.95);
+    transform: translateY(-1px);
+  }
+
+  .topo-node-card.active {
+    border-color: rgba(56, 189, 248, 0.5);
+    background: rgba(22, 28, 42, 0.95);
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.15);
+  }
+
+  .node-icon-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--r-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 5px;
+  }
+
+  .node-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .node-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .node-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .node-sub {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+  }
+
+  .node-status-led {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .led-ok {
+    background: var(--signal-emerald);
+    box-shadow: 0 0 6px var(--signal-emerald);
+  }
+
+  /* ---- Telemetry Inspector ---- */
+  .console-inspector {
+    margin-top: 1.25rem;
+    padding: 0.85rem 1rem;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--r-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .insp-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .insp-label {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .insp-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--signal-cyan);
+  }
+
+  .insp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .insp-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cell-k {
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .cell-v {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ---- View 2: Live Log Stream ---- */
+  .telemetry-log {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 270px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: var(--r-md);
+    padding: 0.85rem;
+    overflow-y: auto;
+    font-size: 0.74rem;
+  }
+
+  .log-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    line-height: 1.5;
+  }
+
+  .log-time {
+    color: var(--text-dim);
+    font-size: 0.68rem;
+    flex-shrink: 0;
+  }
+
+  .log-badge {
+    font-size: 0.62rem;
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .badge-sync { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+  .badge-canary { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+  .badge-sec { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+  .badge-mesh { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+  .badge-ok { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+
+  .log-target {
+    color: var(--text-primary);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .log-msg {
+    color: var(--text-secondary);
+  }
+
+  .log-code {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 1px 4px;
+    border-radius: 3px;
+    color: #ffffff;
+  }
+
+  /* ---- Console Footer ---- */
+  .console-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1.15rem;
+    background: rgba(0, 0, 0, 0.25);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 0.68rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .foot-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .foot-k {
+    color: var(--text-muted);
+  }
+
+  .foot-v {
+    color: var(--text-secondary);
+  }
+
+  .text-emerald {
+    color: var(--signal-emerald);
+  }
+
+  @media (max-width: 640px) {
+    .topo-node-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      gap: 0.65rem;
+    }
+
+    .topo-node-card {
+      grid-column: 1 !important;
+      grid-row: auto !important;
+    }
+
+    .topo-connections {
+      display: none;
+    }
+
+    .insp-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    const nodeData = {
+      envoy: {
+        name: "Envoy Cloud Gateway & Kubernetes Gateway API",
+        proto: "HTTP/2 · gRPC · Envoy L7 Routing",
+        sec: "mTLS + OIDC Federation",
+        obs: "OpenTelemetry · Tempo Traces"
+      },
+      openshift: {
+        name: "Red Hat OpenShift Enterprise (BCRP / TAPP Production)",
+        proto: "Microservices Core · Kubernetes 1.28+",
+        sec: "Red Hat ACM · Multi-Cluster Policies",
+        obs: "Elastic Stack · Prometheus Operators"
+      },
+      rke2: {
+        name: "On-Premise HA RKE2 Cluster with Cilium (Promart)",
+        proto: "Rancher RKE2 · eBPF Datapath",
+        sec: "Zero-Trust Network Policies",
+        obs: "Hubble Telemetry · Grafana Alloy"
+      },
+      vault: {
+        name: "HashiCorp Vault Dynamic Credentials & PKI Engine",
+        proto: "Vault Agent Injector · Secret Engines",
+        sec: "Auto-Unseal · Kubernetes Auth Role",
+        obs: "Audit Log Ingestion · Elastic"
+      },
+      argocd: {
+        name: "ArgoCD Continuous Delivery & GitOps Controller",
+        proto: "Declarative Git-to-Cluster Sync",
+        sec: "Cryptographic Commit Verification",
+        obs: "Automated Drift Detection"
+      }
+    };
+
+    const nodeCards = document.querySelectorAll('.topo-node-card');
+    const inspName = document.getElementById('inspName');
+    const inspProto = document.getElementById('inspProto');
+    const inspSec = document.getElementById('inspSec');
+    const inspObs = document.getElementById('inspObs');
+
+    nodeCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        nodeCards.forEach(function(c) { c.classList.remove('active'); });
+        card.classList.add('active');
+
+        const key = card.getAttribute('data-node');
+        if (key && nodeData[key]) {
+          const d = nodeData[key];
+          if (inspName) inspName.textContent = d.name;
+          if (inspProto) inspProto.textContent = d.proto;
+          if (inspSec) inspSec.textContent = d.sec;
+          if (inspObs) inspObs.textContent = d.obs;
+        }
+      });
+    });
+
+    // View switching tabs
+    const tabTopologyBtn = document.getElementById('tabTopologyBtn');
+    const tabTelemetryBtn = document.getElementById('tabTelemetryBtn');
+    const viewTopology = document.getElementById('viewTopology');
+    const viewTelemetry = document.getElementById('viewTelemetry');
+
+    tabTopologyBtn?.addEventListener('click', function() {
+      tabTopologyBtn.classList.add('active');
+      tabTelemetryBtn.classList.remove('active');
+      viewTopology?.classList.remove('is-hidden');
+      viewTelemetry?.classList.add('is-hidden');
+    });
+
+    tabTelemetryBtn?.addEventListener('click', function() {
+      tabTelemetryBtn.classList.add('active');
+      tabTopologyBtn.classList.remove('active');
+      viewTelemetry?.classList.remove('is-hidden');
+      viewTopology?.classList.add('is-hidden');
+    });
+  });
+</script>

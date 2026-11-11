@@ -1,0 +1,402 @@
+---
+/**
+ * ContactSection.astro — Closing "let's work together" moment.
+ * A huge headline lit by a spotlight that follows the cursor, live availability
+ * and Lima local time, and one oversized outlined call to action.
+ */
+const email = 'rafa.libra06@gmail.com';
+---
+
+<section id="contacto" class="portfolio-section contact-section tone-dark" data-tone="dark" aria-labelledby="contact-title">
+  <!-- Spotlight cone + floor glow, steered horizontally by the cursor -->
+  <div class="contact-light" aria-hidden="true">
+    <span class="contact-light__beam"></span>
+    <span class="contact-light__pool"></span>
+  </div>
+
+  <div class="container contact-container">
+    <div class="contact-top">
+      <div class="eyebrow">
+        <span class="signal-dot"></span>
+        <span data-lang="es">Contacto & Colaboración Técnica</span>
+        <span data-lang="en">Direct Engineering Channel</span>
+      </div>
+
+      <div class="contact-status">
+        <span class="contact-status__item">
+          <span class="contact-status__dot" aria-hidden="true"></span>
+          <span>
+            <span class="contact-status__k" data-lang="es">Disponible para proyectos</span>
+            <span class="contact-status__k" data-lang="en">Available for projects</span>
+            <span class="contact-status__v" data-lang="es">Remoto o híbrido</span>
+            <span class="contact-status__v" data-lang="en">Remote or hybrid</span>
+          </span>
+        </span>
+        <span class="contact-status__item">
+          <span>
+            <span class="contact-status__k"><time id="lima-time">--:--</time></span>
+            <span class="contact-status__v">Lima, Perú (GMT-5)</span>
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="contact-grid">
+      <h2 id="contact-title" class="contact-title no-split">
+        <span data-lang="es">Construyamos infraestructura resiliente y entregas sin caídas.</span>
+        <span data-lang="en">Engineering resilient platforms and zero-downtime delivery.</span>
+      </h2>
+
+      <div class="contact-side">
+        <p class="contact-desc" data-lang="es">
+          ¿Interesado en modernizar clústeres Kubernetes (OpenShift, RKE2), implementar gobernanza GitOps con ArgoCD, optimizar observabilidad distribuida o robustecer la seguridad con HashiCorp Vault? Iniciemos una conversación técnica directa.
+        </p>
+        <p class="contact-desc" data-lang="en">
+          Interested in modernizing Kubernetes clusters (OpenShift, RKE2), implementing GitOps with ArgoCD, optimizing distributed observability, or hardening security with HashiCorp Vault? Let's connect directly.
+        </p>
+
+        <!-- Oversized outlined CTA -->
+        <a href={`mailto:${email}`} class="contact-cta">
+          <span class="contact-cta__fill" aria-hidden="true"></span>
+          <span class="contact-cta__label">{email}</span>
+          <span class="contact-cta__arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+          </span>
+        </a>
+
+        <div class="contact-links">
+          <button type="button" class="contact-link" id="copyEmailBtn" aria-label="Copiar correo electrónico">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span id="copyBtnText" data-lang="es">Copiar Correo</span>
+            <span id="copyBtnTextEn" data-lang="en">Copy Email</span>
+          </button>
+
+          <a href="https://www.linkedin.com/in/rafael-luyo-ramirez/" target="_blank" rel="noopener noreferrer" class="contact-link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            <span>LinkedIn</span>
+          </a>
+
+          <a href="https://github.com/RafaelLuyo" target="_blank" rel="noopener noreferrer" class="contact-link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+            <span>GitHub</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Typed so the beam, pool and headline glow all ease together */
+  @property --bx {
+    syntax: '<percentage>';
+    inherits: true;
+    initial-value: 30%;
+  }
+
+  .contact-section {
+    --bx: 30%;
+    transition: --bx 1.2s var(--ease);
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: stretch;
+    padding: 8rem 0 6rem;
+    overflow: hidden;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--line-dim);
+  }
+
+  /* ---------- Spotlight ---------- */
+  .contact-light {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .contact-light__beam {
+    position: absolute;
+    top: -10%;
+    left: var(--bx);
+    width: 46vw;
+    height: 120%;
+    transform: translateX(-50%);
+    background: conic-gradient(from 0deg at 50% 0%,
+      transparent 0deg 165deg,
+      rgba(150, 200, 255, 0.22) 171deg,
+      rgba(215, 230, 255, 0.42) 180deg,
+      rgba(150, 200, 255, 0.22) 189deg,
+      transparent 195deg 360deg);
+    filter: blur(18px);
+  }
+
+  .contact-light__pool {
+    position: absolute;
+    bottom: -18%;
+    left: var(--bx);
+    width: 70vw;
+    height: 55%;
+    transform: translateX(-50%);
+    background: radial-gradient(50% 50% at 50% 50%, rgba(124, 108, 255, 0.28), rgba(62, 200, 255, 0.1) 45%, transparent 70%);
+    filter: blur(30px);
+  }
+
+  .contact-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5rem;
+  }
+
+  /* ---------- Top row: eyebrow + live status ---------- */
+  .contact-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-status {
+    display: flex;
+    gap: 2.5rem;
+  }
+
+  .contact-status__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .contact-status__item > span:last-child {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-status__dot {
+    width: 8px;
+    height: 8px;
+    margin-top: 7px;
+    border-radius: 50%;
+    background: var(--signal-emerald);
+    box-shadow: 0 0 0 4px var(--signal-emerald-glow);
+    animation: pulse-dot 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    50% { box-shadow: 0 0 0 8px rgba(48, 209, 88, 0); }
+  }
+
+  .contact-status__k {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .contact-status__v {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  /* ---------- Headline + side column ---------- */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
+    gap: 4rem;
+    align-items: end;
+  }
+
+  .contact-title {
+    font-size: clamp(2.6rem, 5.6vw, 5.6rem);
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+    /* The headline catches the spotlight where it falls */
+    background: radial-gradient(60% 120% at var(--bx) 0%, #ffffff 0%, #d9d9e3 35%, #5d5d66 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .contact-side {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .contact-desc {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  /* ---------- Oversized outlined CTA ---------- */
+  .contact-cta {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.55rem 0.55rem 0.55rem 1.75rem;
+    border-radius: var(--r-pill);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: var(--text-primary);
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.45s var(--ease), border-color 0.45s var(--ease);
+  }
+
+  .contact-cta__fill {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--action-primary);
+    transform: translateY(101%);
+    border-radius: inherit;
+    transition: transform 0.55s var(--ease);
+  }
+
+  .contact-cta:hover,
+  .contact-cta:focus-visible {
+    color: var(--action-primary-ink);
+    border-color: var(--action-primary);
+  }
+
+  .contact-cta:hover .contact-cta__fill,
+  .contact-cta:focus-visible .contact-cta__fill {
+    transform: translateY(0);
+  }
+
+  .contact-cta__label {
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .contact-cta__arrow {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--aurora);
+    color: #000;
+    transition: transform 0.55s var(--ease);
+  }
+
+  .contact-cta:hover .contact-cta__arrow {
+    transform: rotate(45deg);
+  }
+
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    background: none;
+    border: 0;
+    font: 500 0.95rem var(--font-sans);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+  }
+
+  .contact-link:hover {
+    color: var(--text-primary);
+  }
+
+  @media (max-width: 1024px) {
+    .contact-section {
+      min-height: auto;
+      padding: 6rem 0;
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .contact-light__beam {
+      width: 90vw;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .contact-status {
+      gap: 1.5rem;
+    }
+
+    .contact-cta__arrow {
+      width: 46px;
+      height: 46px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-status__dot {
+      animation: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Copy email
+    var copyBtn = document.getElementById('copyEmailBtn');
+    var copyTextEs = document.getElementById('copyBtnText');
+    var copyTextEn = document.getElementById('copyBtnTextEn');
+    copyBtn?.addEventListener('click', function() {
+      navigator.clipboard.writeText('rafa.libra06@gmail.com').then(function() {
+        if (copyTextEs) copyTextEs.textContent = '¡Copiado!';
+        if (copyTextEn) copyTextEn.textContent = 'Copied!';
+        setTimeout(function() {
+          if (copyTextEs) copyTextEs.textContent = 'Copiar Correo';
+          if (copyTextEn) copyTextEn.textContent = 'Copy Email';
+        }, 2200);
+      });
+    });
+
+    // Live Lima time
+    var timeEl = document.getElementById('lima-time');
+    function tick() {
+      if (!timeEl) return;
+      timeEl.textContent = new Date().toLocaleTimeString('es-PE', {
+        hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'America/Lima'
+      });
+    }
+    tick();
+    setInterval(tick, 30000);
+
+    // Spotlight follows the cursor horizontally
+    var section = document.getElementById('contacto');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (section && !reduce && window.matchMedia('(hover: hover)').matches) {
+      section.addEventListener('pointermove', function(e) {
+        var r = section.getBoundingClientRect();
+        var x = ((e.clientX - r.left) / r.width) * 100;
+        section.style.setProperty('--bx', Math.max(10, Math.min(90, x)).toFixed(1) + '%');
+      }, { passive: true });
+    }
+  });
+</script>
